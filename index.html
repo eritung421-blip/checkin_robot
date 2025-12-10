@@ -162,7 +162,7 @@
       </div>
       
       <button id="btn" class="btn" onclick="handleCheckIn()">📍 立即打卡</button>
-      <button class="btn btn-mood" onclick="checkMood()">☀️ 桑尼の気持ちは...</button>
+      <button class="btn btn-mood" onclick="checkMood()">☀️ 桑尼の気持ちは⋯</button>
       
       <div class="footer-links">
         <button class="link-btn" onclick="openMakeupModal()">⏰ 補打卡申請</button>
@@ -185,24 +185,22 @@
   </div>
 
   <script>
-    // 🟢 這裡是你原本的 LIFF ID (我沒看到你的 ID，如果你有請填進去，沒有的話留空也不會死當)
     const LIFF_ID = ""; 
-
-    // 🟢 修正 1：網址加上引號
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbzmvi7JSbLQvvNac9jLUrxcQdeeyWCf8PoutQB8Wx2L9p0QbLzpoz6S5IY4Dq5nqZw4/exec"; 
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwu9cq0zqEHYL_kt5rQwks6NXoi78nwCaPDZYwGNMQpMnJpx2K57cXCfGnY194tE1eg/exec"; 
     
-    // 🟢 修正 2：只保留這個正確的宣告 (包含你所有成員)
+    // 名單設定
     const USER_LIST = ["Eri", "Jessica", "Ann", "Joy", "Ally", "Irene", "桑尼"];
 
     const COMPANY_LAT = 25.06180836703763; 
     const COMPANY_LNG = 121.5446397637914;
     const ALLOWED_DISTANCE = 30; 
     
-    // 🟢 修正 3：刪除這行會報錯的 GAS 語法
-    // const USER_LIST = <?!= JSON.stringify(userList) ?>; 
-
     let map, userMarker, companyCircle;
     let isFirstLocate = true; 
+    
+    // 🟢 新增：用來記錄上一次的位置，做防抖過濾
+    let lastLat = 0;
+    let lastLng = 0;
 
     const nameInput = document.getElementById('manual-name');
     const statusEl = document.getElementById('status');
@@ -215,7 +213,6 @@
       const savedName = localStorage.getItem('gps_uname');
       if (savedName && USER_LIST.includes(savedName)) nameInput.value = savedName;
       try { 
-        // 只有當 LIFF_ID 有值的時候才初始化，避免錯誤
         if(LIFF_ID) await liff.init({ liffId: LIFF_ID }); 
       } catch (e) {}
     };
@@ -223,7 +220,7 @@
     function initMap() {
         map = L.map('map', { zoomControl: false, attributionControl: false }).setView([COMPANY_LAT, COMPANY_LNG], 16);
         
-        // 使用 Voyager 風格
+        // 使用 Voyager 風格 (彩色但乾淨)
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 20, subdomains: 'abcd' }).addTo(map);
 
         companyCircle = L.circle([COMPANY_LAT, COMPANY_LNG], { 
@@ -247,6 +244,16 @@
     }
 
     function updateMapLocation(lat, lng) {
+        // 🟢 雜訊過濾：如果移動距離小於 3 公尺，就忽略，不要一直動
+        // 這樣紅點就不會一直發抖了
+        if (getDistance(lat, lng, lastLat, lastLng) < 3 && !isFirstLocate) {
+            return; 
+        }
+        
+        // 更新最後位置
+        lastLat = lat;
+        lastLng = lng;
+
         if (userMarker) {
             userMarker.setLatLng([lat, lng]);
         } else {
@@ -258,8 +265,10 @@
             userMarker = L.marker([lat, lng], {icon: pulseIcon}).addTo(map);
         }
 
+        // 🟢 超級穩版：關閉動畫 (animate: false)
+        // 直接瞬移到位置，徹底解決「進場很抖」的問題
         if (isFirstLocate) {
-            map.flyTo([lat, lng], 17, { animate: true, duration: 1.5 });
+            map.setView([lat, lng], 17, { animate: false }); 
             isFirstLocate = false; 
         }
     }
