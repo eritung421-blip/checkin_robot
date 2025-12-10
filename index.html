@@ -15,7 +15,7 @@
       --primary: #0daaba; 
       --primary-dark: #0a8e9b; 
       --wifi-btn: #86cfb9;
-      --wifi-btn-dark: #86cfb9;
+      --wifi-btn-dark: #6eb9a3;
       --bg: #f4f7f6; 
       --white: #ffffff; 
       --text: #333333; 
@@ -73,7 +73,7 @@
 
     /* 地圖樣式 */
     #map {
-      width: 100%; height: 250px; /* 稍微縮小一點給按鈕空間 */
+      width: 100%; height: 250px; 
       border-radius: 18px; border: none;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
       margin-bottom: 12px; z-index: 1; background: #f8f9fa; 
@@ -94,6 +94,7 @@
 
     .info-text { font-size: 12px; color: #999; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 5px; height: 18px; }
 
+    /* 按鈕基礎樣式 */
     .btn {
       width: 100%; height: 50px; border: none; border-radius: 16px;
       font-size: 16px; font-weight: 700; color: var(--white);
@@ -106,8 +107,24 @@
     .btn:active { transform: scale(0.97); background: var(--primary-dark); }
     .btn:disabled { background: #e0e0e0; color:#aaa; box-shadow: none; cursor: not-allowed; }
     
-    /* 🟢 新增 Wi-Fi 按鈕樣式 */
-    .btn-wifi { background: var(--wifi-btn); box-shadow: 0 4px 15px rgba(94, 53, 177, 0.25); }
+    /* 🟢 新增：雙排按鈕容器 */
+    .btn-group {
+      display: flex;
+      width: 100%;
+      gap: 10px; /* 按鈕間距 */
+      margin-bottom: 10px;
+    }
+    /* 讓群組內的按鈕各佔一半 */
+    .btn-group .btn {
+      flex: 1;
+      width: auto;
+      margin-bottom: 0;
+      font-size: 14px; /* 字體稍微縮小以防換行 */
+      padding: 0 4px;
+    }
+
+    /* 顏色變化 */
+    .btn-wifi { background: var(--wifi-btn); box-shadow: 0 4px 15px rgba(134, 207, 185, 0.25); }
     .btn-wifi:active { background: var(--wifi-btn-dark); }
 
     .btn-mood { background: #ffc107; color: #5a4200; box-shadow: 0 4px 15px rgba(255, 193, 7, 0.25); }
@@ -153,8 +170,10 @@
         <span id="status">📡 正在搜尋 GPS 訊號...</span>
       </div>
       
-      <button id="btn" class="btn" onclick="handleCheckIn()">📍 GPS 定位打卡</button>
-      <button id="btn-wifi" class="btn btn-wifi" onclick="handleWifiCheckIn()">📡 Wi-Fi 打卡 (IP認證)</button>
+      <div class="btn-group">
+        <button id="btn" class="btn" onclick="handleCheckIn()">📍 GPS 打卡</button>
+        <button id="btn-wifi" class="btn btn-wifi" onclick="handleWifiCheckIn()">📡 Wi-Fi 打卡</button>
+      </div>
       
       <button class="btn btn-mood" onclick="checkMood()">☀️ 桑尼の気持ちは⋯？</button>
       
@@ -179,8 +198,10 @@
   </div>
 
   <script>
+    // ⚠️ 這裡的 ID 如果您有在 GAS 設定好 LIFF_ID，通常可以留空
+    // 但如果有需要跳轉，建議填入你的 LIFF ID
     const LIFF_ID = ""; 
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbzYSxasNgRGLwkXU5uUASa_fH46trItLxpjw1jcFBCTwPhZQVUsHCIqm7AOdbm7OI4S/exec"; 
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyRYfRDdgMr_yqP_5XyJ0XKylCfh9VyyzVpg1whInSHaM880wvsfMl3WO-5Dg2lvvUX/exec"; 
     
     // 名單設定
     const USER_LIST = ["Eri", "Jessica", "Ann", "Joy", "Ally", "Irene", "桑尼"];
@@ -239,25 +260,23 @@
        else { statusEl.innerHTML = `🔴 距離公司 ${Math.round(dist)}m (太遠了)`; statusEl.style.color = "#ff5252"; }
     }
 
-    // 🟢 新增：Wi-Fi 打卡邏輯
+    // Wi-Fi 打卡邏輯
     async function handleWifiCheckIn() {
       const uname = nameInput.value.trim();
       if (!uname) return alert("請選擇姓名！");
       localStorage.setItem('gps_uname', uname);
       
       btnWifi.disabled = true; 
-      btnWifi.innerText = "驗證IP中...";
+      btnWifi.innerText = "驗證中...";
 
       try {
-        // 1. 抓取使用者的公開 IP (使用 api.ipify.org 免費服務)
         const ipRes = await fetch('https://api.ipify.org?format=json');
         const ipData = await ipRes.json();
         const userIP = ipData.ip;
         
-        // 2. 傳給 GAS 進行後端驗證
         submitData({ 
             action: 'check_in', 
-            checkType: 'ip',  // 告訴後端這是 IP 打卡
+            checkType: 'ip', 
             displayName: uname, 
             userIP: userIP,
             userLocation: "IP檢查" 
@@ -266,7 +285,7 @@
       } catch (e) {
         alert("無法讀取 IP，請確認網路連線正常");
         btnWifi.disabled = false;
-        btnWifi.innerText = "📡 Wi-Fi 打卡 (IP認證)";
+        btnWifi.innerText = "📡 Wi-Fi / IP";
       }
     }
 
@@ -328,8 +347,8 @@
     }
     
     function resetBtn() { 
-        btn.disabled = false; btn.innerText = "📍 GPS 定位打卡"; 
-        btnWifi.disabled = false; btnWifi.innerText = "📡 Wi-Fi 打卡 (IP認證)";
+        btn.disabled = false; btn.innerText = "📍 GPS 打卡"; 
+        btnWifi.disabled = false; btnWifi.innerText = "📡 Wi-Fi / IP";
     }
 
     function showMoodResult(data) {
