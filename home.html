@@ -1,446 +1,723 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
+
 <html>
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.2">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Menlo; color: #5a5a5a}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Menlo; color: #112d9e}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Menlo; color: #14606b}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Menlo; color: #232526}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Menlo; color: #8f000f}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Menlo; color: #232526; min-height: 15.0px}
-    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Menlo; color: #4d009d}
-    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Menlo; color: #3c3f43}
-    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Menlo; color: #156536}
-    p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Menlo; color: #a90060}
-    p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Menlo; color: #131315}
-    p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px 'PingFang TC'; color: #3c3f43}
-    span.s1 {color: #f6000b}
-    span.s2 {color: #1f1f1f}
-    span.s3 {color: #232526}
-    span.s4 {color: #112d9e}
-    span.s5 {color: #8f000f}
-    span.s6 {font: 13.0px 'PingFang TC'}
-    span.s7 {font: 13.0px 'Apple Color Emoji'}
-    span.s8 {color: #14606b}
-    span.s9 {color: #4d009d}
-    span.s10 {color: #0b2981}
-    span.s11 {color: #156536}
-    span.s12 {font: 13.0px 'PingFang TC'; color: #232526}
-    span.s13 {font: 13.0px 'Apple Color Emoji'; color: #232526}
-    span.s14 {color: #a90060}
-    span.s15 {color: #131315}
-    span.s16 {font: 13.0px Menlo; color: #232526}
-    span.s17 {font: 13.0px Menlo}
-    span.s18 {font: 13.0px 'Apple Color Emoji'; color: #8f000f}
-    span.s19 {font: 13.0px 'PingFang TC'; color: #8f000f}
-    span.s20 {color: #3c3f43}
-    span.s21 {font: 13.0px 'PingFang TC'; color: #3c3f43}
-    span.s22 {color: #af051c}
+
+  <base target="_top">
+
+  <meta charset="utf-8">
+
+  <title>出勤小精靈✨🐔</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+
+  <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  
+
+  <style>
+
+    :root { 
+
+      --primary: #0daaba; 
+
+      --primary-dark: #0a8e9b; 
+
+      --bg: #f4f7f6; 
+
+      --white: #ffffff; 
+
+      --text: #333333; 
+
+    }
+
+    
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    
+
+    html, body {
+
+      height: 100%; width: 100%; overflow: hidden; position: fixed;
+
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+      background-color: var(--bg); margin: 0; padding: 0;
+
+      display: flex; justify-content: center; align-items: center;
+
+    }
+
+
+
+    .container {
+
+      width: 100%; height: 100%; max-width: 480px; 
+
+      display: flex; flex-direction: column; align-items: center; justify-content: center; 
+
+      padding: 15px; position: relative; z-index: 10;
+
+    }
+
+
+
+    .card {
+
+      background: var(--white); 
+
+      width: 100%; 
+
+      padding: 24px 20px;
+
+      border-radius: 24px; 
+
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+
+      display: flex; flex-direction: column; align-items: center;
+
+      max-height: 95vh; overflow-y: auto;
+
+    }
+
+    .card::-webkit-scrollbar { display: none; }
+
+
+
+    .header-group { display: flex; align-items: center; justify-content: center; margin-bottom: 12px; width: 100%; }
+
+    .icon-box { font-size: 24px; margin-right: 8px; animation: bounce 2s infinite; }
+
+    @keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-4px);} }
+
+    h2 { margin: 0; color: #2c3e50; font-size: 19px; font-weight: 800; }
+
+
+
+    .input-group { width: 100%; margin-bottom: 12px; }
+
+    
+
+    label { font-size: 13px; font-weight: 700; color: var(--primary); display: block; margin-bottom: 6px; margin-left: 4px; }
+
+    
+
+    select, input { 
+
+      display: block; width: 100%; height: 46px; 
+
+      padding: 0 15px; border: 2px solid #f0f0f0; border-radius: 14px; 
+
+      font-size: 16px; outline: none; background: #fafafa; 
+
+      text-align: center; color: var(--text); -webkit-appearance: none;
+
+    }
+
+    
+
+    select {
+
+      text-align-last: center; 
+
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%230daaba%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+
+      background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 12px auto; padding-right: 30px;
+
+    }
+
+
+
+    input[type="datetime-local"] { align-items: center; justify-content: center; display: flex; font-family: inherit; }
+
+
+
+    /* 地圖樣式 */
+
+    #map {
+
+      width: 100%;
+
+      height: 280px; 
+
+      border-radius: 18px;
+
+      border: none;
+
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+
+      margin-bottom: 12px;
+
+      z-index: 1;
+
+      background: #f8f9fa; 
+
+    }
+
+
+
+    /* 呼吸圓點 (使用者) */
+
+    .user-pulse-marker {
+
+        background-color: #ff5252;
+
+        width: 16px; height: 16px;
+
+        border-radius: 50%;
+
+        border: 2px solid white;
+
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+
+        position: relative;
+
+    }
+
+    .user-pulse-marker::after {
+
+        content: ''; display: block; position: absolute;
+
+        top: 50%; left: 50%; transform: translate(-50%, -50%);
+
+        width: 32px; height: 32px;
+
+        border-radius: 50%;
+
+        background: rgba(255, 82, 82, 0.4);
+
+        animation: pulse 1.5s infinite;
+
+        z-index: -1;
+
+    }
+
+    @keyframes pulse {
+
+        0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+
+        100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+
+    }
+
+
+
+    .info-text { font-size: 12px; color: #999; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 5px; height: 18px; }
+
+
+
+    .btn {
+
+      width: 100%; height: 52px; border: none; border-radius: 16px;
+
+      font-size: 16px; font-weight: 700; color: var(--white);
+
+      background: var(--primary); 
+
+      box-shadow: 0 4px 15px rgba(13, 170, 186, 0.25);
+
+      margin-bottom: 10px; cursor: pointer;
+
+      display: flex; justify-content: center; align-items: center; line-height: 1; padding: 0;
+
+      transition: transform 0.1s;
+
+    }
+
+    .btn:active { transform: scale(0.97); background: var(--primary-dark); }
+
+    .btn:disabled { background: #e0e0e0; color:#aaa; box-shadow: none; cursor: not-allowed; }
+
+    
+
+    .btn-mood { background: #ffc107; color: #5a4200; box-shadow: 0 4px 15px rgba(255, 193, 7, 0.25); }
+
+    .btn-mood:active { background: #ffb300; }
+
+
+
+    .footer-links { margin-top: 5px; }
+
+    .link-btn { background: none; border: none; color: #b0b0b0; font-size: 13px; cursor: pointer; padding: 10px; }
+
+    .link-btn:hover { color: var(--primary); }
+
+
+
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); display: none; z-index: 9999; align-items: flex-start; justify-content: center; padding-top: 10vh; overflow-y: auto; }
+
+    .modal { background: white; padding: 25px 20px; border-radius: 24px; width: 85%; max-width: 320px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.15); animation: modalPop 0.3s ease-out; margin-bottom: 50px; }
+
+    @keyframes modalPop { from { transform: scale(0.95) translateY(10px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+
+
+
+    .res-title { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 12px; }
+
+    .res-msg { font-size: 14px; color: #666; line-height: 1.5; margin-bottom: 20px; white-space: pre-wrap; }
+
+    .close-btn { background: #f5f5f5; color: #888; box-shadow: none; height: 44px; margin: 0; }
+
+
+
+    .mood-icon-wrapper { font-size: 64px; margin: 5px 0 15px; display: inline-block; }
+
+    .score-list { background: #f8f9fa; border-radius: 12px; padding: 12px; margin-bottom: 15px; border: 1px solid #eee; max-height: 180px; overflow-y: auto; }
+
+    .score-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #e0e0e0; font-size: 14px; }
+
+    .confetti { position: fixed; width: 8px; height: 8px; background-color: #f00; animation: fall linear forwards; z-index: 100; opacity: 0; }
+
+    @keyframes fall { to { transform: translateY(100vh) rotate(720deg); opacity: 1; } }
+
   </style>
+
 </head>
+
 <body>
-<p class="p1">&lt;!DOCTYPE<span class="s1"> html</span>&gt;</p>
-<p class="p2"><span class="s2">&lt;</span>html<span class="s2">&gt;</span></p>
-<p class="p2"><span class="s2">&lt;</span>head<span class="s2">&gt;</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;</span><span class="s4">base</span><span class="s3"> </span>target<span class="s2">=</span><span class="s5">"_top"</span><span class="s2">&gt;</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;</span><span class="s4">meta</span><span class="s3"> </span>charset<span class="s2">=</span><span class="s5">"utf-8"</span><span class="s2">&gt;</span></p>
-<p class="p4"><span class="Apple-converted-space">  </span><span class="s2">&lt;</span><span class="s4">title</span><span class="s2">&gt;</span><span class="s6">出勤小精靈</span><span class="s7">✨🐔</span><span class="s2">&lt;/</span><span class="s4">title</span><span class="s2">&gt;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;</span><span class="s4">meta</span><span class="s3"> </span><span class="s8">name</span><span class="s2">=</span>"viewport"<span class="s3"> </span><span class="s8">content</span><span class="s2">=</span>"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"<span class="s2">&gt;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;</span><span class="s4">script</span><span class="s3"> </span><span class="s8">charset</span><span class="s2">=</span>"utf-8"<span class="s3"> </span><span class="s8">src</span><span class="s2">=</span>"https://static.line-scdn.net/liff/edge/2/sdk.js"<span class="s2">&gt;&lt;/</span><span class="s4">script</span><span class="s2">&gt;</span></p>
-<p class="p6"><span class="Apple-converted-space">  </span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;</span><span class="s4">link</span><span class="s3"> </span><span class="s8">rel</span><span class="s2">=</span>"stylesheet"<span class="s3"> </span><span class="s8">href</span><span class="s2">=</span>"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"<span class="s3"> </span><span class="s2">/&gt;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;</span><span class="s4">script</span><span class="s3"> </span><span class="s8">src</span><span class="s2">=</span>"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"<span class="s2">&gt;&lt;/</span><span class="s4">script</span><span class="s2">&gt;</span></p>
-<p class="p6"><span class="Apple-converted-space">  </span></p>
-<p class="p2"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;</span>style<span class="s2">&gt;</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span><span class="s9">:root</span> {<span class="Apple-converted-space"> </span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>--primary:<span class="s3"> </span><span class="s10">#0daaba</span><span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>--primary-dark:<span class="s3"> </span><span class="s10">#0a8e9b</span><span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s8">--bg:</span> <span class="s10">#f4f7f6</span>;<span class="Apple-converted-space"> </span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s8">--white:</span> <span class="s10">#ffffff</span>;<span class="Apple-converted-space"> </span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s8">--text:</span> <span class="s10">#333333</span>;<span class="Apple-converted-space"> </span></p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p6"><span class="Apple-converted-space">    </span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">*</span><span class="s3"> { </span>box-sizing:<span class="s3"> </span><span class="s5">border-box</span><span class="s3">; </span>-webkit-tap-highlight-color:<span class="s3"> </span><span class="s5">transparent</span><span class="s3">; }</span></p>
-<p class="p6"><span class="Apple-converted-space">    </span></p>
-<p class="p4"><span class="Apple-converted-space">    </span><span class="s9">html</span>, <span class="s9">body</span> {</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>height:<span class="s3"> </span><span class="s11">100%</span><span class="s3">; </span>width:<span class="s3"> </span><span class="s11">100%</span><span class="s3">; </span>overflow:<span class="s3"> </span><span class="s5">hidden</span><span class="s3">; </span>position:<span class="s3"> </span><span class="s5">fixed</span><span class="s3">;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s8">font-family:</span><span class="s3"> </span>-apple-system<span class="s3">, </span>BlinkMacSystemFont<span class="s3">, </span>"Segoe UI"<span class="s3">, </span>Roboto<span class="s3">, </span>"Helvetica Neue"<span class="s3">, </span>Arial<span class="s3">, </span>sans-serif<span class="s3">;</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>background-color:<span class="s3"> </span><span class="s5">var(--bg)</span><span class="s3">; </span>margin:<span class="s3"> </span><span class="s11">0</span><span class="s3">; </span>padding:<span class="s3"> </span><span class="s11">0</span><span class="s3">;</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>display:<span class="s3"> </span><span class="s5">flex</span><span class="s3">; </span>justify-content:<span class="s3"> </span><span class="s5">center</span><span class="s3">; </span>align-items:<span class="s3"> </span><span class="s5">center</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p4"><br>
-</p>
-<p class="p7"><span class="s3"><span class="Apple-converted-space">    </span></span>.container<span class="s3"> {</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>width:<span class="s3"> </span><span class="s11">100%</span><span class="s3">; </span>height:<span class="s3"> </span><span class="s11">100%</span><span class="s3">; </span>max-width:<span class="s3"> </span><span class="s11">480px</span><span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>display:<span class="s3"> </span><span class="s5">flex</span><span class="s3">; </span>flex-direction:<span class="s3"> </span><span class="s5">column</span><span class="s3">; </span>align-items:<span class="s3"> </span><span class="s5">center</span><span class="s3">; </span>justify-content:<span class="s3"> </span><span class="s5">center</span><span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>padding:<span class="s3"> </span><span class="s11">15px</span><span class="s3">; </span>position:<span class="s3"> </span><span class="s5">relative</span><span class="s3">; </span>z-index:<span class="s3"> </span><span class="s11">10</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p4"><br>
-</p>
-<p class="p4"><span class="Apple-converted-space">    </span><span class="s9">.card</span> {</p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s8">background:</span><span class="s3"> </span>var(--white)<span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s8">width:</span> <span class="s11">100%</span>;<span class="Apple-converted-space"> </span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s8">padding:</span> <span class="s11">24px</span> <span class="s11">20px</span>;</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>border-radius:<span class="s3"> </span><span class="s11">24px</span><span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s8">box-shadow:</span> <span class="s11">0</span> <span class="s11">10px</span> <span class="s11">30px</span> <span class="s5">rgba(</span><span class="s11">0</span>, <span class="s11">0</span>, <span class="s11">0</span>, <span class="s11">0.04</span><span class="s5">)</span>;</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>display:<span class="s3"> </span><span class="s5">flex</span><span class="s3">; </span>flex-direction:<span class="s3"> </span><span class="s5">column</span><span class="s3">; </span>align-items:<span class="s3"> </span><span class="s5">center</span><span class="s3">;</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>max-height:<span class="s3"> </span><span class="s11">95vh</span><span class="s3">; </span>overflow-y:<span class="s3"> </span><span class="s5">auto</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p7"><span class="s3"><span class="Apple-converted-space">    </span></span>.card::-webkit-scrollbar<span class="s3"> { </span><span class="s8">display:</span><span class="s3"> </span><span class="s5">none</span><span class="s3">; }</span></p>
-<p class="p4"><br>
-</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.header-group</span><span class="s3"> { </span>display:<span class="s3"> </span><span class="s5">flex</span><span class="s3">; </span>align-items:<span class="s3"> </span><span class="s5">center</span><span class="s3">; </span>justify-content:<span class="s3"> </span><span class="s5">center</span><span class="s3">; </span>margin-bottom:<span class="s3"> </span><span class="s11">12px</span><span class="s3">; </span>width:<span class="s3"> </span><span class="s11">100%</span><span class="s3">; }</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.icon-box</span><span class="s3"> { </span>font-size:<span class="s3"> </span><span class="s11">24px</span><span class="s3">; </span>margin-right:<span class="s3"> </span><span class="s11">8px</span><span class="s3">; </span>animation:<span class="s3"> </span><span class="s5">bounce</span><span class="s3"> </span><span class="s11">2s</span><span class="s3"> </span><span class="s5">infinite</span><span class="s3">; }</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">@keyframes</span><span class="s3"> </span>bounce<span class="s3"> { </span><span class="s11">0%</span><span class="s3">, </span><span class="s11">100%</span><span class="s3"> {</span><span class="s8">transform:</span><span class="s3"> </span>translateY(<span class="s11">0</span>)<span class="s3">;} </span><span class="s11">50%</span><span class="s3"> {</span><span class="s8">transform:</span><span class="s3"> </span>translateY(<span class="s11">-4px</span>)<span class="s3">;} }</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">h2</span><span class="s3"> { </span>margin:<span class="s3"> </span><span class="s11">0</span><span class="s3">; </span>color:<span class="s3"> </span><span class="s10">#2c3e50</span><span class="s3">; </span>font-size:<span class="s3"> </span><span class="s11">19px</span><span class="s3">; </span>font-weight:<span class="s3"> </span><span class="s11">800</span><span class="s3">; }</span></p>
-<p class="p4"><br>
-</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.input-group</span><span class="s3"> { </span>width:<span class="s3"> </span><span class="s11">100%</span><span class="s3">; </span>margin-bottom:<span class="s3"> </span><span class="s11">12px</span><span class="s3">; }</span></p>
-<p class="p6"><span class="Apple-converted-space">    </span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">label</span><span class="s3"> { </span>font-size:<span class="s3"> </span><span class="s11">13px</span><span class="s3">; </span>font-weight:<span class="s3"> </span><span class="s11">700</span><span class="s3">; </span>color:<span class="s3"> </span><span class="s5">var(--primary)</span><span class="s3">; </span>display:<span class="s3"> </span><span class="s5">block</span><span class="s3">; </span>margin-bottom:<span class="s3"> </span><span class="s11">6px</span><span class="s3">; </span>margin-left:<span class="s3"> </span><span class="s11">4px</span><span class="s3">; }</span></p>
-<p class="p6"><span class="Apple-converted-space">    </span></p>
-<p class="p7"><span class="s3"><span class="Apple-converted-space">    </span></span>select<span class="s3">, </span>input<span class="s3"> {<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>display:<span class="s3"> </span><span class="s5">block</span><span class="s3">; </span>width:<span class="s3"> </span><span class="s11">100%</span><span class="s3">; </span>height:<span class="s3"> </span><span class="s11">46px</span><span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>padding:<span class="s3"> </span><span class="s11">0</span><span class="s3"> </span><span class="s11">15px</span><span class="s3">; </span>border:<span class="s3"> </span><span class="s11">2px</span><span class="s3"> </span><span class="s5">solid</span><span class="s3"> </span><span class="s10">#f0f0f0</span><span class="s3">; </span>border-radius:<span class="s3"> </span><span class="s11">14px</span><span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>font-size:<span class="s3"> </span><span class="s11">16px</span><span class="s3">; </span>outline:<span class="s3"> </span><span class="s5">none</span><span class="s3">; </span>background:<span class="s3"> </span><span class="s10">#fafafa</span><span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>text-align:<span class="s3"> </span><span class="s5">center</span><span class="s3">; </span>color:<span class="s3"> </span><span class="s5">var(--text)</span><span class="s3">; </span>-webkit-appearance:<span class="s3"> </span><span class="s5">none</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p6"><span class="Apple-converted-space">    </span></p>
-<p class="p4"><span class="Apple-converted-space">    </span><span class="s9">select</span> {</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>text-align-last:<span class="s3"> </span><span class="s5">center</span><span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s8">background-image:</span><span class="s3"> </span>url<span class="s3">(</span>"data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%230daaba%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"<span class="s3">);</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>background-repeat:<span class="s3"> </span><span class="s5">no-repeat</span><span class="s3">; </span>background-position:<span class="s3"> </span><span class="s5">right</span><span class="s3"> </span><span class="s11">15px</span><span class="s3"> </span><span class="s5">top</span><span class="s3"> </span><span class="s11">50%</span><span class="s3">; </span>background-size:<span class="s3"> </span><span class="s11">12px</span><span class="s3"> </span><span class="s5">auto</span><span class="s3">; </span>padding-right:<span class="s3"> </span><span class="s11">30px</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p4"><br>
-</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">input</span><span class="s3">[</span><span class="s5">type</span><span class="s3">=</span><span class="s5">"datetime-local"</span><span class="s3">] { </span>align-items:<span class="s3"> </span><span class="s5">center</span><span class="s3">; </span>justify-content:<span class="s3"> </span><span class="s5">center</span><span class="s3">; </span>display:<span class="s3"> </span><span class="s5">flex</span><span class="s3">; </span>font-family:<span class="s3"> </span><span class="s5">inherit</span><span class="s3">; }</span></p>
-<p class="p4"><br>
-</p>
-<p class="p8"><span class="s3"><span class="Apple-converted-space">    </span></span>/* <span class="s6">地圖樣式</span> */</p>
-<p class="p4"><span class="Apple-converted-space">    </span><span class="s9">#map</span> {</p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s8">width:</span> <span class="s11">100%</span>;</p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s8">height:</span> <span class="s11">280px</span>;<span class="Apple-converted-space"> </span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>border-radius:<span class="s3"> </span><span class="s11">18px</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s8">border:</span> <span class="s5">none</span>;</p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s8">box-shadow:</span> <span class="s11">0</span> <span class="s11">4px</span> <span class="s11">12px</span> <span class="s5">rgba(</span><span class="s11">0</span>,<span class="s11">0</span>,<span class="s11">0</span>,<span class="s11">0.08</span><span class="s5">)</span>;<span class="Apple-converted-space"> </span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>margin-bottom:<span class="s3"> </span><span class="s11">12px</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s8">z-index:</span> <span class="s11">1</span>;</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>background:<span class="s3"> </span><span class="s10">#f8f9fa</span><span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p4"><br>
-</p>
-<p class="p8"><span class="s3"><span class="Apple-converted-space">    </span></span>/* <span class="s6">呼吸圓點</span> (<span class="s6">使用者</span>) */</p>
-<p class="p7"><span class="s3"><span class="Apple-converted-space">    </span></span>.user-pulse-marker<span class="s3"> {</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">        </span></span>background-color:<span class="s3"> </span><span class="s10">#ff5252</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s8">width:</span> <span class="s11">16px</span>; <span class="s8">height:</span> <span class="s11">16px</span>;</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">        </span></span>border-radius:<span class="s3"> </span><span class="s11">50%</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s8">border:</span> <span class="s11">2px</span> <span class="s5">solid</span> <span class="s5">white</span>;</p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s8">box-shadow:</span> <span class="s11">0</span> <span class="s11">0</span> <span class="s11">10px</span> <span class="s5">rgba(</span><span class="s11">0</span>,<span class="s11">0</span>,<span class="s11">0</span>,<span class="s11">0.2</span><span class="s5">)</span>;</p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s8">position:</span> <span class="s5">relative</span>;</p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p7"><span class="s3"><span class="Apple-converted-space">    </span></span>.user-pulse-marker::after<span class="s3"> {</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">        </span></span>content:<span class="s3"> </span><span class="s5">''</span><span class="s3">; </span>display:<span class="s3"> </span><span class="s5">block</span><span class="s3">; </span>position:<span class="s3"> </span><span class="s5">absolute</span><span class="s3">;</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">        </span></span>top:<span class="s3"> </span><span class="s11">50%</span><span class="s3">; </span>left:<span class="s3"> </span><span class="s11">50%</span><span class="s3">; </span>transform:<span class="s3"> </span><span class="s5">translate(</span><span class="s11">-50%</span><span class="s3">, </span><span class="s11">-50%</span><span class="s5">)</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s8">width:</span> <span class="s11">32px</span>; <span class="s8">height:</span> <span class="s11">32px</span>;</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">        </span></span>border-radius:<span class="s3"> </span><span class="s11">50%</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s8">background:</span> <span class="s5">rgba(</span><span class="s11">255</span>, <span class="s11">82</span>, <span class="s11">82</span>, <span class="s11">0.4</span><span class="s5">)</span>;</p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">        </span></span><span class="s8">animation:</span><span class="s3"> </span>pulse<span class="s3"> </span><span class="s11">1.5s</span><span class="s3"> </span>infinite<span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s8">z-index:</span> <span class="s11">-1</span>;</p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><span class="s3"><span class="Apple-converted-space">    </span></span>@keyframes<span class="s3"> </span><span class="s5">pulse</span><span class="s3"> {</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s11">0%</span> { <span class="s8">transform:</span> <span class="s5">translate(</span><span class="s11">-50%</span>, <span class="s11">-50%</span><span class="s5">)</span> <span class="s5">scale(</span><span class="s11">0.5</span><span class="s5">)</span>; <span class="s8">opacity:</span> <span class="s11">1</span>; }</p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s11">100%</span> { <span class="s8">transform:</span> <span class="s5">translate(</span><span class="s11">-50%</span>, <span class="s11">-50%</span><span class="s5">)</span> <span class="s5">scale(</span><span class="s11">2</span><span class="s5">)</span>; <span class="s8">opacity:</span> <span class="s11">0</span>; }</p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p4"><br>
-</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.info-text</span><span class="s3"> { </span>font-size:<span class="s3"> </span><span class="s11">12px</span><span class="s3">; </span>color:<span class="s3"> </span><span class="s10">#999</span><span class="s3">; </span>margin-bottom:<span class="s3"> </span><span class="s11">15px</span><span class="s3">; </span>display:<span class="s3"> </span><span class="s5">flex</span><span class="s3">; </span>align-items:<span class="s3"> </span><span class="s5">center</span><span class="s3">; </span>justify-content:<span class="s3"> </span><span class="s5">center</span><span class="s3">; </span>gap:<span class="s3"> </span><span class="s11">5px</span><span class="s3">; </span>height:<span class="s3"> </span><span class="s11">18px</span><span class="s3">; }</span></p>
-<p class="p4"><br>
-</p>
-<p class="p4"><span class="Apple-converted-space">    </span><span class="s9">.btn</span> {</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>width:<span class="s3"> </span><span class="s11">100%</span><span class="s3">; </span>height:<span class="s3"> </span><span class="s11">52px</span><span class="s3">; </span>border:<span class="s3"> </span><span class="s5">none</span><span class="s3">; </span>border-radius:<span class="s3"> </span><span class="s11">16px</span><span class="s3">;</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>font-size:<span class="s3"> </span><span class="s11">16px</span><span class="s3">; </span>font-weight:<span class="s3"> </span><span class="s11">700</span><span class="s3">; </span>color:<span class="s3"> </span><span class="s5">var(--white)</span><span class="s3">;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s8">background:</span><span class="s3"> </span>var(--primary)<span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p9"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s8">box-shadow:</span><span class="s3"> </span>0<span class="s3"> </span>4px<span class="s3"> </span>15px<span class="s3"> </span><span class="s5">rgba(</span>13<span class="s3">, </span>170<span class="s3">, </span>186<span class="s3">, </span>0.25<span class="s5">)</span><span class="s3">;</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>margin-bottom:<span class="s3"> </span><span class="s11">10px</span><span class="s3">; </span>cursor:<span class="s3"> </span><span class="s5">pointer</span><span class="s3">;</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>display:<span class="s3"> </span><span class="s5">flex</span><span class="s3">; </span>justify-content:<span class="s3"> </span><span class="s5">center</span><span class="s3">; </span>align-items:<span class="s3"> </span><span class="s5">center</span><span class="s3">; </span>line-height:<span class="s3"> </span><span class="s11">1</span><span class="s3">; </span>padding:<span class="s3"> </span><span class="s11">0</span><span class="s3">;</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span></span>transition:<span class="s3"> </span><span class="s5">transform</span><span class="s3"> </span><span class="s11">0.1s</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.btn:active</span><span class="s3"> { </span><span class="s8">transform:</span><span class="s3"> </span>scale(<span class="s11">0.97</span>)<span class="s3">; </span><span class="s8">background:</span><span class="s3"> </span>var(--primary-dark)<span class="s3">; }</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.btn:disabled</span><span class="s3"> { </span>background:<span class="s3"> </span><span class="s10">#e0e0e0</span><span class="s3">; </span>color:<span class="s10">#aaa</span><span class="s3">; </span>box-shadow:<span class="s3"> </span><span class="s5">none</span><span class="s3">; </span>cursor:<span class="s3"> </span><span class="s5">not-allowed</span><span class="s3">; }</span></p>
-<p class="p6"><span class="Apple-converted-space">    </span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.btn-mood</span><span class="s3"> { </span>background:<span class="s3"> </span><span class="s10">#ffc107</span><span class="s3">; </span>color:<span class="s3"> </span><span class="s10">#5a4200</span><span class="s3">; </span>box-shadow:<span class="s3"> </span><span class="s11">0</span><span class="s3"> </span><span class="s11">4px</span><span class="s3"> </span><span class="s11">15px</span><span class="s3"> </span><span class="s5">rgba(</span><span class="s11">255</span><span class="s3">, </span><span class="s11">193</span><span class="s3">, </span><span class="s11">7</span><span class="s3">, </span><span class="s11">0.25</span><span class="s5">)</span><span class="s3">; }</span></p>
-<p class="p7"><span class="s3"><span class="Apple-converted-space">    </span></span>.btn-mood:active<span class="s3"> { </span><span class="s8">background:</span><span class="s3"> </span><span class="s10">#ffb300</span><span class="s3">; }</span></p>
-<p class="p4"><br>
-</p>
-<p class="p7"><span class="s3"><span class="Apple-converted-space">    </span></span>.footer-links<span class="s3"> { </span><span class="s8">margin-top:</span><span class="s3"> </span><span class="s11">5px</span><span class="s3">; }</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.link-btn</span><span class="s3"> { </span>background:<span class="s3"> </span><span class="s5">none</span><span class="s3">; </span>border:<span class="s3"> </span><span class="s5">none</span><span class="s3">; </span>color:<span class="s3"> </span><span class="s10">#b0b0b0</span><span class="s3">; </span>font-size:<span class="s3"> </span><span class="s11">13px</span><span class="s3">; </span>cursor:<span class="s3"> </span><span class="s5">pointer</span><span class="s3">; </span>padding:<span class="s3"> </span><span class="s11">10px</span><span class="s3">; }</span></p>
-<p class="p7"><span class="s3"><span class="Apple-converted-space">    </span></span>.link-btn:hover<span class="s3"> { </span><span class="s8">color:</span><span class="s3"> </span><span class="s5">var(--primary)</span><span class="s3">; }</span></p>
-<p class="p4"><br>
-</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.modal-overlay</span><span class="s3"> { </span>position:<span class="s3"> </span><span class="s5">fixed</span><span class="s3">; </span>top:<span class="s3"> </span><span class="s11">0</span><span class="s3">; </span>left:<span class="s3"> </span><span class="s11">0</span><span class="s3">; </span>right:<span class="s3"> </span><span class="s11">0</span><span class="s3">; </span>bottom:<span class="s3"> </span><span class="s11">0</span><span class="s3">; </span>background:<span class="s3"> </span><span class="s5">rgba(</span><span class="s11">0</span><span class="s3">,</span><span class="s11">0</span><span class="s3">,</span><span class="s11">0</span><span class="s3">,</span><span class="s11">0.4</span><span class="s5">)</span><span class="s3">; </span>backdrop-filter:<span class="s3"> </span><span class="s5">blur(</span><span class="s11">5px</span><span class="s5">)</span><span class="s3">; </span>display:<span class="s3"> </span><span class="s5">none</span><span class="s3">; </span>z-index:<span class="s3"> </span><span class="s11">9999</span><span class="s3">; </span>align-items:<span class="s3"> </span><span class="s5">flex-start</span><span class="s3">; </span>justify-content:<span class="s3"> </span><span class="s5">center</span><span class="s3">; </span>padding-top:<span class="s3"> </span><span class="s11">10vh</span><span class="s3">; </span>overflow-y:<span class="s3"> </span><span class="s5">auto</span><span class="s3">; }</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.modal</span><span class="s3"> { </span>background:<span class="s3"> </span><span class="s5">white</span><span class="s3">; </span>padding:<span class="s3"> </span><span class="s11">25px</span><span class="s3"> </span><span class="s11">20px</span><span class="s3">; </span>border-radius:<span class="s3"> </span><span class="s11">24px</span><span class="s3">; </span>width:<span class="s3"> </span><span class="s11">85%</span><span class="s3">; </span>max-width:<span class="s3"> </span><span class="s11">320px</span><span class="s3">; </span>text-align:<span class="s3"> </span><span class="s5">center</span><span class="s3">; </span>box-shadow:<span class="s3"> </span><span class="s11">0</span><span class="s3"> </span><span class="s11">20px</span><span class="s3"> </span><span class="s11">60px</span><span class="s3"> </span><span class="s5">rgba(</span><span class="s11">0</span><span class="s3">,</span><span class="s11">0</span><span class="s3">,</span><span class="s11">0</span><span class="s3">,</span><span class="s11">0.15</span><span class="s5">)</span><span class="s3">; </span>animation:<span class="s3"> </span><span class="s5">modalPop</span><span class="s3"> </span><span class="s11">0.3s</span><span class="s3"> </span><span class="s5">ease-out</span><span class="s3">; </span>margin-bottom:<span class="s3"> </span><span class="s11">50px</span><span class="s3">; }</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">@keyframes</span><span class="s3"> </span>modalPop<span class="s3"> { </span>from<span class="s3"> { </span><span class="s8">transform:</span><span class="s3"> </span>scale(<span class="s11">0.95</span>)<span class="s3"> </span>translateY(<span class="s11">10px</span>)<span class="s3">; </span><span class="s8">opacity:</span><span class="s3"> </span><span class="s11">0</span><span class="s3">; } </span>to<span class="s3"> { </span><span class="s8">transform:</span><span class="s3"> </span>scale(<span class="s11">1</span>)<span class="s3"> </span>translateY(<span class="s11">0</span>)<span class="s3">; </span><span class="s8">opacity:</span><span class="s3"> </span><span class="s11">1</span><span class="s3">; } }</span></p>
-<p class="p4"><br>
-</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.res-title</span><span class="s3"> { </span>font-size:<span class="s3"> </span><span class="s11">18px</span><span class="s3">; </span>font-weight:<span class="s3"> </span><span class="s5">bold</span><span class="s3">; </span>color:<span class="s3"> </span><span class="s10">#333</span><span class="s3">; </span>margin-bottom:<span class="s3"> </span><span class="s11">12px</span><span class="s3">; }</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.res-msg</span><span class="s3"> { </span>font-size:<span class="s3"> </span><span class="s11">14px</span><span class="s3">; </span>color:<span class="s3"> </span><span class="s10">#666</span><span class="s3">; </span>line-height:<span class="s3"> </span><span class="s11">1.5</span><span class="s3">; </span>margin-bottom:<span class="s3"> </span><span class="s11">20px</span><span class="s3">; </span>white-space:<span class="s3"> </span><span class="s5">pre-wrap</span><span class="s3">; }</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.close-btn</span><span class="s3"> { </span>background:<span class="s3"> </span><span class="s10">#f5f5f5</span><span class="s3">; </span>color:<span class="s3"> </span><span class="s10">#888</span><span class="s3">; </span>box-shadow:<span class="s3"> </span><span class="s5">none</span><span class="s3">; </span>height:<span class="s3"> </span><span class="s11">44px</span><span class="s3">; </span>margin:<span class="s3"> </span><span class="s11">0</span><span class="s3">; }</span></p>
-<p class="p4"><br>
-</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.mood-icon-wrapper</span><span class="s3"> { </span>font-size:<span class="s3"> </span><span class="s11">64px</span><span class="s3">; </span>margin:<span class="s3"> </span><span class="s11">5px</span><span class="s3"> </span><span class="s11">0</span><span class="s3"> </span><span class="s11">15px</span><span class="s3">; </span>display:<span class="s3"> </span><span class="s5">inline-block</span><span class="s3">; }</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.score-list</span><span class="s3"> { </span>background:<span class="s3"> </span><span class="s10">#f8f9fa</span><span class="s3">; </span>border-radius:<span class="s3"> </span><span class="s11">12px</span><span class="s3">; </span>padding:<span class="s3"> </span><span class="s11">12px</span><span class="s3">; </span>margin-bottom:<span class="s3"> </span><span class="s11">15px</span><span class="s3">; </span>border:<span class="s3"> </span><span class="s11">1px</span><span class="s3"> </span><span class="s5">solid</span><span class="s3"> </span><span class="s10">#eee</span><span class="s3">; </span>max-height:<span class="s3"> </span><span class="s11">180px</span><span class="s3">; </span>overflow-y:<span class="s3"> </span><span class="s5">auto</span><span class="s3">; }</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.score-row</span><span class="s3"> { </span>display:<span class="s3"> </span><span class="s5">flex</span><span class="s3">; </span>justify-content:<span class="s3"> </span><span class="s5">space-between</span><span class="s3">; </span>padding:<span class="s3"> </span><span class="s11">6px</span><span class="s3"> </span><span class="s11">0</span><span class="s3">; </span>border-bottom:<span class="s3"> </span><span class="s11">1px</span><span class="s3"> </span><span class="s5">dashed</span><span class="s3"> </span><span class="s10">#e0e0e0</span><span class="s3">; </span>font-size:<span class="s3"> </span><span class="s11">14px</span><span class="s3">; }</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s9">.confetti</span><span class="s3"> { </span>position:<span class="s3"> </span><span class="s5">fixed</span><span class="s3">; </span>width:<span class="s3"> </span><span class="s11">8px</span><span class="s3">; </span>height:<span class="s3"> </span><span class="s11">8px</span><span class="s3">; </span>background-color:<span class="s3"> </span><span class="s10">#f00</span><span class="s3">; </span>animation:<span class="s3"> </span><span class="s5">fall</span><span class="s3"> </span><span class="s5">linear</span><span class="s3"> </span><span class="s5">forwards</span><span class="s3">; </span>z-index:<span class="s3"> </span><span class="s11">100</span><span class="s3">; </span>opacity:<span class="s3"> </span><span class="s11">0</span><span class="s3">; }</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">@keyframes</span><span class="s3"> </span>fall<span class="s3"> { </span>to<span class="s3"> { </span><span class="s8">transform:</span><span class="s3"> </span>translateY(<span class="s11">100vh</span>)<span class="s3"> </span>rotate(<span class="s11">720deg</span>)<span class="s3">; </span><span class="s8">opacity:</span><span class="s3"> </span><span class="s11">1</span><span class="s3">; } }</span></p>
-<p class="p2"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;/</span>style<span class="s2">&gt;</span></p>
-<p class="p2"><span class="s2">&lt;/</span>head<span class="s2">&gt;</span></p>
-<p class="p2"><span class="s2">&lt;</span>body<span class="s2">&gt;</span></p>
-<p class="p4"><br>
-</p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;</span><span class="s4">div</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"container"<span class="s2">&gt;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s2">&lt;</span><span class="s4">div</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"card"<span class="s2">&gt;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s2">&lt;</span><span class="s4">div</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"header-group"<span class="s2">&gt;</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">&lt;</span><span class="s4">div</span> <span class="s8">class</span><span class="s2">=</span><span class="s5">"icon-box"</span><span class="s2">&gt;</span><span class="s7">🐔</span><span class="s2">&lt;/</span><span class="s4">div</span><span class="s2">&gt;</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">&lt;</span><span class="s4">h2</span><span class="s2">&gt;</span><span class="s6">出勤小精靈</span><span class="s2">&lt;/</span><span class="s4">h2</span><span class="s2">&gt;</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s2">&lt;/</span><span class="s4">div</span><span class="s2">&gt;</span></p>
-<p class="p4"><br>
-</p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s2">&lt;</span><span class="s4">div</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"input-group"<span class="s2">&gt;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">        </span></span><span class="s2">&lt;</span><span class="s4">select</span><span class="s3"> </span><span class="s8">id</span><span class="s2">=</span>"manual-name"<span class="s2">&gt;</span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">          </span></span><span class="s2">&lt;</span><span class="s4">option</span><span class="s3"> </span>value<span class="s2">=</span><span class="s5">""</span><span class="s3"> </span>disabled<span class="s3"> </span>selected<span class="s2">&gt;</span><span class="s12">請選擇您的姓名</span><span class="s2">&lt;/</span><span class="s4">option</span><span class="s2">&gt;</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">&lt;/</span><span class="s4">select</span><span class="s2">&gt;</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s2">&lt;/</span><span class="s4">div</span><span class="s2">&gt;</span></p>
-<p class="p4"><br>
-</p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s2">&lt;</span><span class="s4">div</span> <span class="s8">id</span><span class="s2">=</span><span class="s5">"map"</span><span class="s2">&gt;&lt;/</span><span class="s4">div</span><span class="s2">&gt;</span></p>
-<p class="p6"><span class="Apple-converted-space">      </span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s2">&lt;</span><span class="s4">div</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"info-text"<span class="s2">&gt;</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s2">&lt;</span><span class="s4">span</span> <span class="s8">id</span><span class="s2">=</span><span class="s5">"status"</span><span class="s2">&gt;</span><span class="s7">📡</span> <span class="s6">正在搜尋</span> GPS <span class="s6">訊號</span>...<span class="s2">&lt;/</span><span class="s4">span</span><span class="s2">&gt;</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s2">&lt;/</span><span class="s4">div</span><span class="s2">&gt;</span></p>
-<p class="p6"><span class="Apple-converted-space">      </span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s2">&lt;</span><span class="s4">button</span><span class="s3"> </span><span class="s8">id</span><span class="s2">=</span>"btn"<span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"btn"<span class="s3"> </span><span class="s8">onclick</span><span class="s2">=</span>"handleCheckIn()"<span class="s2">&gt;</span><span class="s13">📍</span><span class="s3"> </span><span class="s12">立即打卡</span><span class="s2">&lt;/</span><span class="s4">button</span><span class="s2">&gt;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s2">&lt;</span><span class="s4">button</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"btn btn-mood"<span class="s3"> </span><span class="s8">onclick</span><span class="s2">=</span>"checkMood()"<span class="s2">&gt;</span><span class="s13">☀️</span><span class="s3"> </span><span class="s12">桑尼の気持ち</span><span class="s2">&lt;/</span><span class="s4">button</span><span class="s2">&gt;</span></p>
-<p class="p6"><span class="Apple-converted-space">      </span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s2">&lt;</span><span class="s4">div</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"footer-links"<span class="s2">&gt;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">        </span></span><span class="s2">&lt;</span><span class="s4">button</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"link-btn"<span class="s3"> </span><span class="s8">onclick</span><span class="s2">=</span>"openMakeupModal()"<span class="s2">&gt;</span><span class="s13">⏰</span><span class="s3"> </span><span class="s12">補打卡申請</span><span class="s2">&lt;/</span><span class="s4">button</span><span class="s2">&gt;</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s2">&lt;/</span><span class="s4">div</span><span class="s2">&gt;</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">&lt;/</span><span class="s4">div</span><span class="s2">&gt;</span></p>
-<p class="p2"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;/</span>div<span class="s2">&gt;</span></p>
-<p class="p4"><br>
-</p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;</span><span class="s4">div</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"modal-overlay"<span class="s3"> </span><span class="s8">id</span><span class="s2">=</span>"makeupModal"<span class="s2">&gt;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s2">&lt;</span><span class="s4">div</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"modal"<span class="s2">&gt;</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s2">&lt;</span><span class="s4">div</span> <span class="s8">class</span><span class="s2">=</span><span class="s5">"res-title"</span><span class="s2">&gt;</span><span class="s6">補打卡申請</span><span class="s2">&lt;/</span><span class="s4">div</span><span class="s2">&gt;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s2">&lt;</span><span class="s4">div</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"input-group"<span class="s2">&gt;&lt;</span><span class="s4">label</span><span class="s2">&gt;</span><span class="s12">管理密碼</span><span class="s2">&lt;/</span><span class="s4">label</span><span class="s2">&gt;&lt;</span><span class="s4">input</span><span class="s3"> </span><span class="s8">type</span><span class="s2">=</span>"password"<span class="s3"> </span><span class="s8">id</span><span class="s2">=</span>"makeup-pass"<span class="s3"> </span><span class="s8">placeholder</span><span class="s2">=</span>"<span class="s6">輸入密碼</span>"<span class="s2">&gt;&lt;/</span><span class="s4">div</span><span class="s2">&gt;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s2">&lt;</span><span class="s4">div</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"input-group"<span class="s2">&gt;&lt;</span><span class="s4">label</span><span class="s2">&gt;</span><span class="s12">補卡時間</span><span class="s2">&lt;/</span><span class="s4">label</span><span class="s2">&gt;&lt;</span><span class="s4">input</span><span class="s3"> </span><span class="s8">type</span><span class="s2">=</span>"datetime-local"<span class="s3"> </span><span class="s8">id</span><span class="s2">=</span>"makeup-time"<span class="s2">&gt;&lt;/</span><span class="s4">div</span><span class="s2">&gt;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s2">&lt;</span><span class="s4">button</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"btn"<span class="s3"> </span><span class="s8">onclick</span><span class="s2">=</span>"submitMakeup()"<span class="s2">&gt;</span><span class="s12">送出申請</span><span class="s2">&lt;/</span><span class="s4">button</span><span class="s2">&gt;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s2">&lt;</span><span class="s4">button</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"btn close-btn"<span class="s3"> </span><span class="s8">onclick</span><span class="s2">=</span>"closeModal('makeupModal')"<span class="s2">&gt;</span><span class="s12">取消</span><span class="s2">&lt;/</span><span class="s4">button</span><span class="s2">&gt;</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span><span class="s2">&lt;/</span><span class="s4">div</span><span class="s2">&gt;</span></p>
-<p class="p2"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;/</span>div<span class="s2">&gt;</span></p>
-<p class="p4"><br>
-</p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;</span><span class="s4">div</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"modal-overlay"<span class="s3"> </span><span class="s8">id</span><span class="s2">=</span>"resultModal"<span class="s2">&gt;</span></p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s2">&lt;</span><span class="s4">div</span><span class="s3"> </span><span class="s8">class</span><span class="s2">=</span>"modal"<span class="s3"> </span><span class="s8">id</span><span class="s2">=</span>"modalContent"<span class="s2">&gt;&lt;/</span><span class="s4">div</span><span class="s2">&gt;</span></p>
-<p class="p2"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;/</span>div<span class="s2">&gt;</span></p>
-<p class="p4"><br>
-</p>
-<p class="p2"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;</span>script<span class="s2">&gt;</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span><span class="s4">const</span> <span class="s14">GAS_URL</span> = https://script.google.com/macros/s/AKfycbwu9cq0zqEHYL_kt5rQwks6NXoi78nwCaPDZYwGNMQpMnJpx2K57cXCfGnY194tE1eg/exec;<span class="Apple-converted-space"> </span></p>
-<p class="p4"><span class="Apple-converted-space">    </span><span class="s4">const</span> <span class="s14">USER_LIST</span> = ["Eri", "Jessica"];</p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">const</span><span class="s3"> </span><span class="s14">COMPANY_LAT</span><span class="s3"> = </span>25.06180836703763<span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p3"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">const</span><span class="s3"> </span><span class="s14">COMPANY_LNG</span><span class="s3"> = </span>121.5446397637914<span class="s3">;</span></p>
-<p class="p10"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">const</span><span class="s3"> </span>ALLOWED_DISTANCE<span class="s3"> = </span><span class="s8">30</span><span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="Apple-converted-space">    </span><span class="s4">const</span> <span class="s14">USER_LIST</span> = &lt;?!= <span class="s14">JSON</span>.<span class="s15">stringify</span>(<span class="s15">userList</span>) ?&gt;;</p>
-<p class="p4"><br>
-</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">let</span><span class="s3"> </span>map<span class="s3">, </span>userMarker<span class="s3">, </span>companyCircle<span class="s3">;</span></p>
-<p class="p8"><span class="s3"><span class="Apple-converted-space">    </span></span>// <span class="s7">🟢</span> <span class="s6">防止震動開關</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">let</span><span class="s3"> </span>isFirstLocate<span class="s3"> = </span><span class="s4">true</span><span class="s3">;<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><br>
-</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">const</span><span class="s3"> </span>nameInput<span class="s3"> = </span>document<span class="s3">.</span>getElementById<span class="s3">(</span><span class="s5">'manual-name'</span><span class="s3">);</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">const</span><span class="s3"> </span>statusEl<span class="s3"> = </span>document<span class="s3">.</span>getElementById<span class="s3">(</span><span class="s5">'status'</span><span class="s3">);</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">const</span><span class="s3"> </span>btn<span class="s3"> = </span>document<span class="s3">.</span>getElementById<span class="s3">(</span><span class="s5">'btn'</span><span class="s3">);</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">const</span><span class="s3"> </span>modalContent<span class="s3"> = </span>document<span class="s3">.</span>getElementById<span class="s3">(</span><span class="s5">'modalContent'</span><span class="s3">);</span></p>
-<p class="p4"><br>
-</p>
-<p class="p4"><span class="Apple-converted-space">    </span><span class="s15">window</span>.<span class="s15">onload</span> = <span class="s4">async</span> <span class="s4">function</span>() {</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span>initDropdown<span class="s3">();</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s15">initMap</span>();</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s4">const</span><span class="s3"> </span>savedName<span class="s3"> = </span>localStorage<span class="s3">.</span>getItem<span class="s3">(</span><span class="s5">'gps_uname'</span><span class="s3">);</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s4">if</span><span class="s3"> (</span>savedName<span class="s3"> &amp;&amp; </span><span class="s14">USER_LIST</span><span class="s3">.</span>includes<span class="s3">(</span>savedName<span class="s3">)) </span>nameInput<span class="s3">.</span>value<span class="s3"> = </span>savedName<span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s4">try</span> { <span class="s4">await</span> <span class="s15">liff</span>.<span class="s15">init</span>({ <span class="s15">liffId</span>: <span class="s14">LIFF_ID</span> }); } <span class="s4">catch</span> (<span class="s15">e</span>) {}</p>
-<p class="p4"><span class="Apple-converted-space">    </span>};</p>
-<p class="p4"><br>
-</p>
-<p class="p4"><span class="Apple-converted-space">    </span><span class="s4">function</span> <span class="s15">initMap</span>() {</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">        </span></span>map<span class="s3"> = </span><span class="s14">L</span><span class="s3">.</span>map<span class="s3">(</span><span class="s5">'map'</span><span class="s3">, { </span>zoomControl<span class="s3">: </span><span class="s4">false</span><span class="s3">, </span>attributionControl<span class="s3">: </span><span class="s4">false</span><span class="s3"> }).</span>setView<span class="s3">([</span><span class="s14">COMPANY_LAT</span><span class="s3">, </span><span class="s14">COMPANY_LNG</span><span class="s3">], </span><span class="s8">16</span><span class="s3">);</span></p>
-<p class="p6"><span class="Apple-converted-space">        </span></p>
-<p class="p8"><span class="s3"><span class="Apple-converted-space">        </span></span>// <span class="s7">🟢</span> <span class="s6">這裡換風格！</span>(<span class="s6">目前使用</span> Voyager<span class="s6">：彩色但乾淨</span>)</p>
-<p class="p8"><span class="s3"><span class="Apple-converted-space">        </span></span>// 1. Voyager (<span class="s6">彩色文青風</span> - <span class="s6">推薦</span>)</p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">        </span></span><span class="s14">L</span><span class="s3">.</span><span class="s15">tileLayer</span><span class="s3">(</span>'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'<span class="s3">, { </span><span class="s15">maxZoom</span><span class="s3">: </span><span class="s8">20</span><span class="s3">, </span><span class="s15">subdomains</span><span class="s3">: </span>'abcd'<span class="s3"> }).</span><span class="s15">addTo</span><span class="s3">(</span><span class="s15">map</span><span class="s3">);</span></p>
-<p class="p4"><br>
-</p>
-<p class="p12"><span class="s16"><span class="Apple-converted-space">        </span></span><span class="s17">// 2. </span>如果你想要原本的彩色標準版<span class="s17"> (OSM)</span>，可以把上面那行註解掉，改用這行：</p>
-<p class="p8"><span class="s3"><span class="Apple-converted-space">        </span></span>// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);</p>
-<p class="p4"><br>
-</p>
-<p class="p8"><span class="s3"><span class="Apple-converted-space">        </span></span>// 3. <span class="s6">如果你喜歡深色模式</span> (Dark Matter)<span class="s6">，可以用這行：</span></p>
-<p class="p8"><span class="s3"><span class="Apple-converted-space">        </span></span>// L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 20, subdomains: 'abcd' }).addTo(map);</p>
-<p class="p4"><br>
-</p>
-<p class="p10"><span class="s3"><span class="Apple-converted-space">        </span></span><span class="s15">companyCircle</span><span class="s3"> = </span>L<span class="s3">.</span><span class="s15">circle</span><span class="s3">([</span>COMPANY_LAT<span class="s3">, </span>COMPANY_LNG<span class="s3">], {<span class="Apple-converted-space"> </span></span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">            </span></span>color<span class="s3">: </span><span class="s5">'transparent'</span><span class="s3">, </span>fillColor<span class="s3">: </span><span class="s5">'#0daaba'</span><span class="s3">, </span>fillOpacity<span class="s3">: </span><span class="s8">0.15</span><span class="s3">, </span>radius<span class="s3">: </span><span class="s14">ALLOWED_DISTANCE</span><span class="s3"><span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="Apple-converted-space">        </span>}).<span class="s15">addTo</span>(<span class="s15">map</span>);</p>
-<p class="p6"><span class="Apple-converted-space">        </span></p>
-<p class="p10"><span class="s3"><span class="Apple-converted-space">        </span></span>L<span class="s3">.</span><span class="s15">circleMarker</span><span class="s3">([</span>COMPANY_LAT<span class="s3">, </span>COMPANY_LNG<span class="s3">], {</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">            </span></span>radius<span class="s3">: </span><span class="s8">4</span><span class="s3">, </span>color<span class="s3">: </span><span class="s5">'#fff'</span><span class="s3">, </span>fillColor<span class="s3">: </span><span class="s5">'#0daaba'</span><span class="s3">, </span>fillOpacity<span class="s3">: </span><span class="s8">1</span><span class="s3">, </span>weight<span class="s3">: </span><span class="s8">2</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span>}).<span class="s15">addTo</span>(<span class="s15">map</span>);</p>
-<p class="p4"><br>
-</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">        </span></span><span class="s4">if</span><span class="s3"> (</span>navigator<span class="s3">.</span>geolocation<span class="s3">) {</span></p>
-<p class="p8"><span class="s3"><span class="Apple-converted-space">            </span></span>// <span class="s6">使用</span> watchPosition <span class="s6">監聽移動，但不一定要一直移動鏡頭</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">            </span></span>navigator<span class="s3">.</span>geolocation<span class="s3">.</span>watchPosition<span class="s3">(</span></p>
-<p class="p4"><span class="Apple-converted-space">                </span>(<span class="s15">pos</span>) =&gt; {<span class="Apple-converted-space"> </span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">                  </span></span>updateMapLocation<span class="s3">(</span>pos<span class="s3">.</span>coords<span class="s3">.</span>latitude<span class="s3">, </span>pos<span class="s3">.</span>coords<span class="s3">.</span>longitude<span class="s3">);<span class="Apple-converted-space"> </span></span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">                  </span></span>checkDistanceRealtime<span class="s3">(</span>pos<span class="s3">.</span>coords<span class="s3">.</span>latitude<span class="s3">, </span>pos<span class="s3">.</span>coords<span class="s3">.</span>longitude<span class="s3">);</span></p>
-<p class="p4"><span class="Apple-converted-space">                </span>},</p>
-<p class="p4"><span class="Apple-converted-space">                </span>(<span class="s15">err</span>) =&gt; { <span class="s15">statusEl</span>.<span class="s15">innerText</span> = <span class="s5">"</span><span class="s18">❌</span><span class="s5"> </span><span class="s19">無法取得位置</span><span class="s5">"</span>; <span class="s15">statusEl</span>.<span class="s15">style</span>.<span class="s15">color</span> = <span class="s5">"#ff5252"</span>; },</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">                </span>{ </span>enableHighAccuracy<span class="s3">: </span><span class="s4">true</span><span class="s3">, </span>timeout<span class="s3">: </span><span class="s8">5000</span><span class="s3">, </span>maximumAge<span class="s3">: </span><span class="s8">0</span><span class="s3"> }</span></p>
-<p class="p4"><span class="Apple-converted-space">            </span>);</p>
-<p class="p4"><span class="Apple-converted-space">        </span>}</p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p4"><br>
-</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">function</span><span class="s3"> </span>updateMapLocation<span class="s3">(</span>lat<span class="s3">, </span>lng<span class="s3">) {</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s4">if</span> (<span class="s15">userMarker</span>) {</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">            </span></span>userMarker<span class="s3">.</span>setLatLng<span class="s3">([</span>lat<span class="s3">, </span>lng<span class="s3">]);</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span>} <span class="s4">else</span> {</p>
-<p class="p4"><span class="Apple-converted-space">            </span><span class="s4">const</span> <span class="s15">pulseIcon</span> = <span class="s14">L</span>.<span class="s15">divIcon</span>({</p>
-<p class="p4"><span class="Apple-converted-space">                </span><span class="s15">className</span>: <span class="s5">'user-pulse-marker'</span>,</p>
-<p class="p4"><span class="Apple-converted-space">                </span><span class="s15">iconSize</span>: [<span class="s8">16</span>, <span class="s8">16</span>],</p>
-<p class="p4"><span class="Apple-converted-space">                </span><span class="s15">iconAnchor</span>: [<span class="s8">8</span>, <span class="s8">8</span>]</p>
-<p class="p4"><span class="Apple-converted-space">            </span>});</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">            </span></span>userMarker<span class="s3"> = </span><span class="s14">L</span><span class="s3">.</span>marker<span class="s3">([</span>lat<span class="s3">, </span>lng<span class="s3">], {</span>icon<span class="s3">: </span>pulseIcon<span class="s3">}).</span>addTo<span class="s3">(</span>map<span class="s3">);</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span>}</p>
-<p class="p4"><br>
-</p>
-<p class="p12"><span class="s16"><span class="Apple-converted-space">        </span></span><span class="s17">// </span><span class="s7">🟢</span><span class="s17"> </span>止暈邏輯：只有「第一次」抓到位置時，地圖才會飛過去</p>
-<p class="p12"><span class="s16"><span class="Apple-converted-space">        </span></span><span class="s17">// </span>之後如果人移動，只有紅點會動，地圖不會一直震動</p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s4">if</span> (<span class="s15">isFirstLocate</span>) {</p>
-<p class="p4"><span class="Apple-converted-space">            </span><span class="s15">map</span>.<span class="s15">flyTo</span>([<span class="s15">lat</span>, <span class="s15">lng</span>], <span class="s8">17</span>, { <span class="s15">animate</span>: <span class="s4">true</span>, <span class="s15">duration</span>: <span class="s8">1.5</span> });</p>
-<p class="p4"><span class="Apple-converted-space">            </span><span class="s15">isFirstLocate</span> = <span class="s4">false</span>; <span class="s20">// </span><span class="s21">關閉自動追蹤</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span>}</p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p4"><br>
-</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">function</span><span class="s3"> </span>checkDistanceRealtime<span class="s3">(</span>lat<span class="s3">, </span>lng<span class="s3">) {</span></p>
-<p class="p10"><span class="s3"><span class="Apple-converted-space">       </span></span><span class="s4">const</span><span class="s3"> </span><span class="s15">dist</span><span class="s3"> = </span><span class="s15">getDistance</span><span class="s3">(</span><span class="s15">lat</span><span class="s3">, </span><span class="s15">lng</span><span class="s3">, </span>COMPANY_LAT<span class="s3">, </span>COMPANY_LNG<span class="s3">);</span></p>
-<p class="p4"><span class="Apple-converted-space">       </span><span class="s4">if</span> (<span class="s15">dist</span> &lt;= <span class="s14">ALLOWED_DISTANCE</span>) {</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">         </span></span>statusEl<span class="s3">.</span>innerHTML<span class="s3"> = </span><span class="s5">`</span><span class="s18">🟢</span><span class="s5"> </span><span class="s19">距離公司</span><span class="s5"> </span><span class="s3">${</span><span class="s14">Math</span><span class="s3">.</span>round<span class="s3">(</span>dist<span class="s3">)}</span><span class="s5">m (</span><span class="s19">可打卡</span><span class="s5">)`</span><span class="s3">;</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">         </span></span>statusEl<span class="s3">.</span>style<span class="s3">.</span>color<span class="s3"> = </span><span class="s5">"#0daaba"</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">       </span>} <span class="s4">else</span> {</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">         </span></span>statusEl<span class="s3">.</span>innerHTML<span class="s3"> = </span><span class="s5">`</span><span class="s18">🔴</span><span class="s5"> </span><span class="s19">距離公司</span><span class="s5"> </span><span class="s3">${</span><span class="s14">Math</span><span class="s3">.</span>round<span class="s3">(</span>dist<span class="s3">)}</span><span class="s5">m (</span><span class="s19">太遠了</span><span class="s5">)`</span><span class="s3">;</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">         </span></span>statusEl<span class="s3">.</span>style<span class="s3">.</span>color<span class="s3"> = </span><span class="s5">"#ff5252"</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">       </span>}</p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p4"><br>
-</p>
-<p class="p8"><span class="s3"><span class="Apple-converted-space">    </span></span>// --- <span class="s6">以下邏輯保持不變</span> ---</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">function</span><span class="s3"> </span>initDropdown<span class="s3">() {</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s14">USER_LIST</span>.<span class="s15">forEach</span>(<span class="s15">name</span> =&gt; {</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">            </span></span><span class="s4">let</span><span class="s3"> </span>option<span class="s3"> = </span>document<span class="s3">.</span>createElement<span class="s3">(</span><span class="s5">"option"</span><span class="s3">);</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">            </span></span>option<span class="s3">.</span>value<span class="s3"> = </span>name<span class="s3">; </span>option<span class="s3">.</span>text<span class="s3"> = </span>name<span class="s3">;</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">            </span></span>nameInput<span class="s3">.</span>appendChild<span class="s3">(</span>option<span class="s3">);</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span>});</p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p4"><br>
-</p>
-<p class="p2"><span class="s3"><span class="Apple-converted-space">    </span></span>async<span class="s3"> </span>function<span class="s3"> </span><span class="s15">checkMood</span><span class="s3">() {</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s4">const</span><span class="s3"> </span>moodBtn<span class="s3"> = </span>document<span class="s3">.</span>querySelector<span class="s3">(</span><span class="s5">'.btn-mood'</span><span class="s3">);</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s4">const</span><span class="s3"> </span>originalText<span class="s3"> = </span>moodBtn<span class="s3">.</span>innerText<span class="s3">;</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span>moodBtn<span class="s3">.</span>disabled<span class="s3"> = </span><span class="s4">true</span><span class="s3">; </span>moodBtn<span class="s3">.</span>innerText<span class="s3"> = </span><span class="s5">"</span><span class="s19">讀取中</span><span class="s5">..."</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s4">try</span> {</p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s4">const</span> <span class="s15">res</span> = <span class="s4">await</span> <span class="s15">fetch</span>(<span class="s14">GAS_URL</span>, { <span class="s15">method</span>: <span class="s5">'POST'</span>, <span class="s15">body</span>: <span class="s14">JSON</span>.<span class="s15">stringify</span>({ <span class="s15">action</span>: <span class="s5">'get_mood'</span> }) });</p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s4">const</span> <span class="s15">json</span> = <span class="s4">await</span> <span class="s15">res</span>.<span class="s15">json</span>();</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">        </span></span><span class="s4">if</span><span class="s3"> (</span>json<span class="s3">.</span>status<span class="s3"> === </span><span class="s5">'success'</span><span class="s3">) </span>showMoodResult<span class="s3">(</span>json<span class="s3">);</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span>} <span class="s4">catch</span>(<span class="s15">e</span>) { <span class="s15">alert</span>(<span class="s5">"</span><span class="s19">連線失敗</span><span class="s5">"</span>); }</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s4">finally</span><span class="s3"> { </span>moodBtn<span class="s3">.</span>disabled<span class="s3"> = </span><span class="s4">false</span><span class="s3">; </span>moodBtn<span class="s3">.</span>innerText<span class="s3"> = </span>originalText<span class="s3">; }</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p4"><br>
-</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">function</span><span class="s3"> </span>handleCheckIn<span class="s3">() {</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s4">const</span><span class="s3"> </span>uname<span class="s3"> = </span>nameInput<span class="s3">.</span>value<span class="s3">.</span>trim<span class="s3">();</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s4">if</span> (!<span class="s15">uname</span>) <span class="s4">return</span> <span class="s15">alert</span>(<span class="s5">"</span><span class="s19">請選擇姓名！</span><span class="s5">"</span>);</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span>localStorage<span class="s3">.</span>setItem<span class="s3">(</span><span class="s5">'gps_uname'</span><span class="s3">, </span>uname<span class="s3">);</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s4">if</span><span class="s3"> (!</span>navigator<span class="s3">.</span>geolocation<span class="s3">) </span><span class="s4">return</span><span class="s3"> </span>alert<span class="s3">(</span><span class="s5">"</span><span class="s19">您的裝置不支援</span><span class="s5"> GPS"</span><span class="s3">);</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span>btn<span class="s3">.</span>disabled<span class="s3"> = </span><span class="s4">true</span><span class="s3">; </span>btn<span class="s3">.</span>innerText<span class="s3"> = </span><span class="s5">"</span><span class="s19">打卡中</span><span class="s5">..."</span><span class="s3">;</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span>navigator<span class="s3">.</span>geolocation<span class="s3">.</span>getCurrentPosition<span class="s3">(</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span>(<span class="s15">pos</span>) =&gt; {<span class="Apple-converted-space"> </span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">           </span></span><span class="s4">const</span><span class="s3"> </span>dist<span class="s3"> = </span>getDistance<span class="s3">(</span>pos<span class="s3">.</span>coords<span class="s3">.</span>latitude<span class="s3">, </span>pos<span class="s3">.</span>coords<span class="s3">.</span>longitude<span class="s3">, </span><span class="s14">COMPANY_LAT</span><span class="s3">, </span><span class="s14">COMPANY_LNG</span><span class="s3">);</span></p>
-<p class="p4"><span class="Apple-converted-space">           </span><span class="s4">if</span> (<span class="s15">dist</span> &gt; <span class="s14">ALLOWED_DISTANCE</span>) {<span class="Apple-converted-space"> </span></p>
-<p class="p4"><span class="Apple-converted-space">             </span><span class="s15">showCheckInResult</span>(<span class="s5">"</span><span class="s18">❌</span><span class="s5"> </span><span class="s19">打卡失敗</span><span class="s5">"</span>, <span class="s5">`</span><span class="s19">不在公司範圍內</span><span class="s5">\n</span><span class="s19">距離公司</span><span class="s5"> </span>${<span class="s14">Math</span>.<span class="s15">round</span>(<span class="s15">dist</span>)}<span class="s5">m`</span>, -<span class="s8">1</span>);<span class="Apple-converted-space"> </span></p>
-<p class="p4"><span class="Apple-converted-space">             </span><span class="s15">resetBtn</span>();<span class="Apple-converted-space"> </span></p>
-<p class="p4"><span class="Apple-converted-space">           </span>} <span class="s4">else</span> {<span class="Apple-converted-space"> </span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">             </span></span>submitData<span class="s3">({ </span>action<span class="s3">: </span><span class="s5">'check_in'</span><span class="s3">, </span>displayName<span class="s3">: </span>uname<span class="s3">, </span>userLocation<span class="s3">: </span><span class="s5">`</span><span class="s3">${</span>pos<span class="s3">.</span>coords<span class="s3">.</span>latitude<span class="s3">}</span><span class="s5">,</span><span class="s3">${</span>pos<span class="s3">.</span>coords<span class="s3">.</span>longitude<span class="s3">}</span><span class="s5">`</span><span class="s3"> });<span class="Apple-converted-space"> </span></span></p>
-<p class="p4"><span class="Apple-converted-space">           </span>}</p>
-<p class="p4"><span class="Apple-converted-space">        </span>},</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">        </span>(</span>err<span class="s3">) =&gt; { </span>alert<span class="s3">(</span><span class="s5">"</span><span class="s19">定位失敗</span><span class="s5">"</span><span class="s3">); </span>resetBtn<span class="s3">(); }, { </span>enableHighAccuracy<span class="s3">: </span><span class="s4">true</span><span class="s3">, </span>timeout<span class="s3">: </span><span class="s8">10000</span><span class="s3"> }</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span>);</p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p4"><br>
-</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">function</span><span class="s3"> </span>openMakeupModal<span class="s3">() { </span>document<span class="s3">.</span>getElementById<span class="s3">(</span><span class="s5">'makeupModal'</span><span class="s3">).</span>style<span class="s3">.</span>display<span class="s3"> = </span><span class="s5">'flex'</span><span class="s3">; }</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">function</span><span class="s3"> </span>closeModal<span class="s3">(</span>id<span class="s3">) { </span>document<span class="s3">.</span>getElementById<span class="s3">(</span>id<span class="s3">).</span>style<span class="s3">.</span>display<span class="s3"> = </span><span class="s5">'none'</span><span class="s3">; }</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">function</span><span class="s3"> </span>submitMakeup<span class="s3">() {</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s4">const</span><span class="s3"> </span>uname<span class="s3"> = </span>nameInput<span class="s3">.</span>value<span class="s3">.</span>trim<span class="s3">(); </span><span class="s4">if</span><span class="s3"> (!</span>uname<span class="s3">) </span><span class="s4">return</span><span class="s3"> </span>alert<span class="s3">(</span><span class="s5">"</span><span class="s19">請先選擇姓名</span><span class="s5">"</span><span class="s3">);</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s4">const</span><span class="s3"> </span>p<span class="s3"> = </span>document<span class="s3">.</span>getElementById<span class="s3">(</span><span class="s5">'makeup-pass'</span><span class="s3">).</span>value<span class="s3">; </span><span class="s4">const</span><span class="s3"> </span>t<span class="s3"> = </span>document<span class="s3">.</span>getElementById<span class="s3">(</span><span class="s5">'makeup-time'</span><span class="s3">).</span>value<span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s4">if</span> (!<span class="s15">p</span> || !<span class="s15">t</span>) <span class="s4">return</span> <span class="s15">alert</span>(<span class="s5">"</span><span class="s19">請填寫完整</span><span class="s5">"</span>);</p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s15">closeModal</span><span class="s3">(</span>'makeupModal'<span class="s3">);</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span>submitData<span class="s3">({ </span>action<span class="s3">: </span><span class="s5">'check_in'</span><span class="s3">, </span>displayName<span class="s3">: </span>uname<span class="s3">, </span>isMakeup<span class="s3">: </span><span class="s4">true</span><span class="s3">, </span>password<span class="s3">: </span>p<span class="s3">, </span>checkInTime<span class="s3">: </span>t<span class="s3">, </span>userLocation<span class="s3">: </span><span class="s5">"0,0"</span><span class="s3"> });</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p4"><br>
-</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">async</span><span class="s3"> </span><span class="s4">function</span><span class="s3"> </span>submitData<span class="s3">(</span>payload<span class="s3">) {</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s4">try</span> {</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">        </span></span><span class="s4">const</span><span class="s3"> </span>res<span class="s3"> = </span><span class="s4">await</span><span class="s3"> </span>fetch<span class="s3">(</span><span class="s14">GAS_URL</span><span class="s3">, { </span>method<span class="s3">: </span><span class="s5">'POST'</span><span class="s3">, </span>body<span class="s3">: </span><span class="s14">JSON</span><span class="s3">.</span>stringify<span class="s3">(</span>payload<span class="s3">) });</span></p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s4">const</span> <span class="s15">json</span> = <span class="s4">await</span> <span class="s15">res</span>.<span class="s15">json</span>();</p>
-<p class="p4"><span class="Apple-converted-space">        </span><span class="s4">if</span> (<span class="s15">json</span>.<span class="s15">status</span> === <span class="s5">'success'</span>) {<span class="Apple-converted-space"> </span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">           </span></span><span class="s4">let</span><span class="s3"> </span>msg<span class="s3"> = </span>json<span class="s3">.</span>message<span class="s3">; </span><span class="s4">if</span><span class="s3"> (</span>json<span class="s3">.</span>details<span class="s3">) </span>msg<span class="s3"> = </span><span class="s5">`</span><span class="s3">${</span>json<span class="s3">.</span>details<span class="s3">.</span>status<span class="s3">}</span><span class="s5"> (</span><span class="s3">${</span>json<span class="s3">.</span>details<span class="s3">.</span>time<span class="s3">}</span><span class="s5">)\n</span><span class="s3">${</span>json<span class="s3">.</span>details<span class="s3">.</span>moodText<span class="s3">}</span><span class="s5">`</span><span class="s3">;</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">           </span></span>showCheckInResult<span class="s3">(</span><span class="s5">"</span><span class="s18">✅</span><span class="s5"> </span><span class="s19">打卡成功</span><span class="s5">"</span><span class="s3">, </span>msg<span class="s3">, </span>json<span class="s3">.</span>score<span class="s3"> || </span><span class="s8">0</span><span class="s3">);</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">        </span>} </span><span class="s4">else</span><span class="s3"> { </span>showCheckInResult<span class="s3">(</span><span class="s5">"</span><span class="s18">❌</span><span class="s5"> </span><span class="s19">失敗</span><span class="s5">"</span><span class="s3">, </span>json<span class="s3">.</span>message<span class="s3">, -</span><span class="s8">1</span><span class="s3">); }</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span>} <span class="s4">catch</span> (<span class="s15">e</span>) { <span class="s15">alert</span>(<span class="s5">"</span><span class="s19">錯誤</span><span class="s5">"</span>); } <span class="s4">finally</span> { <span class="s15">resetBtn</span>(); }</p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">function</span><span class="s3"> </span>resetBtn<span class="s3">() { </span>btn<span class="s3">.</span>disabled<span class="s3"> = </span><span class="s4">false</span><span class="s3">; </span>btn<span class="s3">.</span>innerText<span class="s3"> = </span><span class="s5">"</span><span class="s18">📍</span><span class="s5"> </span><span class="s19">立即打卡</span><span class="s5">"</span><span class="s3">; }</span></p>
-<p class="p4"><br>
-</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">function</span><span class="s3"> </span>showMoodResult<span class="s3">(</span>data<span class="s3">) {</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s4">let</span> <span class="s15">scoresHtml</span> = <span class="s5">''</span>;</p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s4">if</span> (<span class="s15">data</span>.<span class="s15">scores</span>) {</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">          </span></span><span class="s4">const</span><span class="s3"> </span>sorted<span class="s3"> = </span><span class="s14">Object</span><span class="s3">.</span>keys<span class="s3">(</span>data<span class="s3">.</span>scores<span class="s3">).</span>sort<span class="s3">((</span>a<span class="s3">,</span>b<span class="s3">) =&gt; </span>data<span class="s3">.</span>scores<span class="s3">[</span>b<span class="s3">] - </span>data<span class="s3">.</span>scores<span class="s3">[</span>a<span class="s3">]);</span></p>
-<p class="p4"><span class="Apple-converted-space">          </span><span class="s15">sorted</span>.<span class="s15">forEach</span>(<span class="s15">u</span> =&gt; {</p>
-<p class="p4"><span class="Apple-converted-space">             </span><span class="s4">const</span> <span class="s15">c</span> = <span class="s15">data</span>.<span class="s15">scores</span>[<span class="s15">u</span>] &gt;= <span class="s8">0</span> ? <span class="s5">'#06c755'</span> : <span class="s5">'#ff5252'</span>;</p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">             </span></span><span class="s15">scoresHtml</span><span class="s3"> += </span>`&lt;div class="score-row"&gt;&lt;span style="color:#555"&gt;<span class="s3">${</span><span class="s15">u</span><span class="s3">}</span>&lt;/span&gt;&lt;span style="font-weight:bold;color:<span class="s3">${</span><span class="s15">c</span><span class="s3">}</span>"&gt;<span class="s3">${</span><span class="s15">data</span><span class="s3">.</span><span class="s15">scores</span><span class="s3">[</span><span class="s15">u</span><span class="s3">]}</span>&lt;/span&gt;&lt;/div&gt;`<span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">          </span>});</p>
-<p class="p4"><span class="Apple-converted-space">      </span>}</p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s15">modalContent</span><span class="s3">.</span><span class="s15">innerHTML</span><span class="s3"> = </span>`&lt;div class="mood-icon-wrapper" style="font-size:50px"&gt;<span class="s3">${</span><span class="s15">data</span><span class="s3">.</span><span class="s15">moodIcon</span><span class="s3">}</span>&lt;/div&gt;&lt;div class="res-title"&gt;<span class="s3">${</span><span class="s15">data</span><span class="s3">.</span><span class="s15">moodText</span><span class="s3">}</span>&lt;/div&gt;&lt;div style="color:#888;font-size:13px;margin-bottom:15px"&gt;"<span class="s3">${</span><span class="s15">data</span><span class="s3">.</span><span class="s15">flavorText</span><span class="s3">}</span>"&lt;/div&gt;&lt;div class="score-list"&gt;<span class="s3">${</span><span class="s15">scoresHtml</span><span class="s3">}</span>&lt;/div&gt;&lt;button class="btn close-btn" onclick="closeModal('resultModal')"&gt;<span class="s6">關閉</span>&lt;/button&gt;`<span class="s3">;</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span>document<span class="s3">.</span>getElementById<span class="s3">(</span><span class="s5">'resultModal'</span><span class="s3">).</span>style<span class="s3">.</span>display<span class="s3"> = </span><span class="s5">'flex'</span><span class="s3">;</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s4">if</span><span class="s3"> (</span>data<span class="s3">.</span>totalScore<span class="s3"> &gt;= </span><span class="s8">50</span><span class="s3">) </span>fireConfetti<span class="s3">();</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">function</span><span class="s3"> </span>showCheckInResult<span class="s3">(</span>title<span class="s3">, </span>msg<span class="s3">, </span>score<span class="s3">) {</span></p>
-<p class="p4"><span class="Apple-converted-space">      </span><span class="s4">let</span> <span class="s15">icon</span> = <span class="s5">"</span><span class="s18">📋</span><span class="s5">"</span>; <span class="s4">if</span> (<span class="s15">score</span> &gt;= <span class="s8">50</span>) { <span class="s15">icon</span> = <span class="s5">"</span><span class="s18">🫢</span><span class="s5">"</span>; <span class="s15">fireConfetti</span>(); } <span class="s4">else</span> <span class="s4">if</span> (<span class="s15">score</span> &gt; <span class="s8">0</span>) <span class="s15">icon</span> = <span class="s5">"</span><span class="s18">👀</span><span class="s5">"</span>; <span class="s4">else</span> <span class="s4">if</span> (<span class="s15">score</span> &lt; <span class="s8">0</span>) <span class="s15">icon</span> = <span class="s5">"</span><span class="s18">👺</span><span class="s5">"</span>;</p>
-<p class="p5"><span class="s3"><span class="Apple-converted-space">      </span></span><span class="s15">modalContent</span><span class="s3">.</span><span class="s15">innerHTML</span><span class="s3"> = </span>`&lt;div style="font-size:40px;margin-bottom:10px"&gt;<span class="s3">${</span><span class="s15">icon</span><span class="s3">}</span>&lt;/div&gt;&lt;div class="res-title"&gt;<span class="s3">${</span><span class="s15">title</span><span class="s3">}</span>&lt;/div&gt;&lt;div class="res-msg"&gt;<span class="s3">${</span><span class="s15">msg</span><span class="s3">}</span>&lt;/div&gt;&lt;button class="btn" onclick="closeModal('resultModal')"&gt;<span class="s6">好的</span>&lt;/button&gt;`<span class="s3">;</span></p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">      </span></span>document<span class="s3">.</span>getElementById<span class="s3">(</span><span class="s5">'resultModal'</span><span class="s3">).</span>style<span class="s3">.</span>display<span class="s3"> = </span><span class="s5">'flex'</span><span class="s3">;</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span>}</p>
-<p class="p11"><span class="s3"><span class="Apple-converted-space">    </span></span><span class="s4">function</span><span class="s3"> </span>fireConfetti<span class="s3">() { </span><span class="s4">const</span><span class="s3"> </span>c<span class="s3"> = [</span><span class="s5">'#ff5252'</span><span class="s3">, </span><span class="s5">'#0daaba'</span><span class="s3">, </span><span class="s5">'#ffd700'</span><span class="s3">]; </span><span class="s4">for</span><span class="s3"> (</span><span class="s4">let</span><span class="s3"> </span>i<span class="s3">=</span><span class="s8">0</span><span class="s3">; </span>i<span class="s3">&lt;</span><span class="s8">40</span><span class="s3">; </span>i<span class="s3">++) { </span><span class="s4">const</span><span class="s3"> </span>d<span class="s3">=</span>document<span class="s3">.</span>createElement<span class="s3">(</span><span class="s5">'div'</span><span class="s3">); </span>d<span class="s3">.</span>classList<span class="s3">.</span>add<span class="s3">(</span><span class="s5">'confetti'</span><span class="s3">); </span>d<span class="s3">.</span>style<span class="s3">.</span>left<span class="s3">=</span><span class="s14">Math</span><span class="s3">.</span>random<span class="s3">()*</span><span class="s8">100</span><span class="s3">+</span><span class="s5">'vw'</span><span class="s3">; </span>d<span class="s3">.</span>style<span class="s3">.</span>backgroundColor<span class="s3">=</span>c<span class="s3">[</span><span class="s14">Math</span><span class="s3">.</span>floor<span class="s3">(</span><span class="s14">Math</span><span class="s3">.</span>random<span class="s3">()*</span>c<span class="s3">.</span>length<span class="s3">)]; </span>d<span class="s3">.</span>style<span class="s3">.</span>animationDuration<span class="s3">=(</span><span class="s14">Math</span><span class="s3">.</span>random<span class="s3">()*</span><span class="s8">2</span><span class="s3">+</span><span class="s8">2</span><span class="s3">)+</span><span class="s5">'s'</span><span class="s3">; </span>document<span class="s3">.</span>body<span class="s3">.</span>appendChild<span class="s3">(</span>d<span class="s3">); </span>setTimeout<span class="s3">(()=&gt;</span>d<span class="s3">.</span>remove<span class="s3">(),</span><span class="s8">4000</span><span class="s3">); } }</span></p>
-<p class="p4"><span class="Apple-converted-space">    </span><span class="s4">function</span> <span class="s15">getDistance</span>(<span class="s15">lat1</span>, <span class="s15">lon1</span>, <span class="s15">lat2</span>, <span class="s15">lon2</span>) { <span class="s4">const</span> <span class="s14">R</span> = <span class="s8">6371e3</span>; <span class="s4">const</span> <span class="s22">φ</span><span class="s8">1</span> = <span class="s15">lat1</span> * <span class="s14">Math</span>.<span class="s14">PI</span>/<span class="s8">180</span>, <span class="s22">φ</span><span class="s8">2</span> = <span class="s15">lat2</span> * <span class="s14">Math</span>.<span class="s14">PI</span>/<span class="s8">180</span>; <span class="s4">const</span> <span class="s15">a</span> = <span class="s14">Math</span>.<span class="s15">sin</span>((<span class="s15">lat2</span>-<span class="s15">lat1</span>)*<span class="s14">Math</span>.<span class="s14">PI</span>/<span class="s8">180</span>/<span class="s8">2</span>)**<span class="s8">2</span> + <span class="s14">Math</span>.<span class="s15">cos</span>(<span class="s22">φ</span><span class="s8">1</span>)*<span class="s14">Math</span>.<span class="s15">cos</span>(<span class="s22">φ</span><span class="s8">2</span>)*<span class="s14">Math</span>.<span class="s15">sin</span>((<span class="s15">lon2</span>-<span class="s15">lon1</span>)*<span class="s14">Math</span>.<span class="s14">PI</span>/<span class="s8">180</span>/<span class="s8">2</span>)**<span class="s8">2</span>; <span class="s4">return</span> <span class="s14">R</span> * <span class="s8">2</span> * <span class="s14">Math</span>.<span class="s15">atan2</span>(<span class="s14">Math</span>.<span class="s15">sqrt</span>(<span class="s15">a</span>), <span class="s14">Math</span>.<span class="s15">sqrt</span>(<span class="s8">1</span>-<span class="s15">a</span>)); }</p>
-<p class="p2"><span class="s3"><span class="Apple-converted-space">  </span></span><span class="s2">&lt;/</span>script<span class="s2">&gt;</span></p>
-<p class="p2"><span class="s2">&lt;/</span>body<span class="s2">&gt;</span></p>
-<p class="p2"><span class="s2">&lt;/</span>html<span class="s2">&gt;</span></p>
+
+
+
+  <div class="container">
+
+    <div class="card">
+
+      <div class="header-group">
+
+        <div class="icon-box">🐔</div>
+
+        <h2>出勤小精靈</h2>
+
+      </div>
+
+
+
+      <div class="input-group">
+
+        <select id="manual-name">
+
+          <option value="" disabled selected>請選擇您的姓名</option>
+
+        </select>
+
+      </div>
+
+
+
+      <div id="map"></div>
+
+      
+
+      <div class="info-text">
+
+        <span id="status">📡 正在搜尋 GPS 訊號...</span>
+
+      </div>
+
+      
+
+      <button id="btn" class="btn" onclick="handleCheckIn()">📍 立即打卡</button>
+
+      <button class="btn btn-mood" onclick="checkMood()">☀️ 桑尼の気持ち</button>
+
+      
+
+      <div class="footer-links">
+
+        <button class="link-btn" onclick="openMakeupModal()">⏰ 補打卡申請</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="modal-overlay" id="makeupModal">
+
+    <div class="modal">
+
+      <div class="res-title">補打卡申請</div>
+
+      <div class="input-group"><label>管理密碼</label><input type="password" id="makeup-pass" placeholder="輸入密碼"></div>
+
+      <div class="input-group"><label>補卡時間</label><input type="datetime-local" id="makeup-time"></div>
+
+      <button class="btn" onclick="submitMakeup()">送出申請</button>
+
+      <button class="btn close-btn" onclick="closeModal('makeupModal')">取消</button>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="modal-overlay" id="resultModal">
+
+    <div class="modal" id="modalContent"></div>
+
+  </div>
+
+
+
+  <script>
+
+    const GAS_URL = https://script.google.com/macros/s/AKfycbwu9cq0zqEHYL_kt5rQwks6NXoi78nwCaPDZYwGNMQpMnJpx2K57cXCfGnY194tE1eg/exec; 
+
+    const USER_LIST = ["Eri", "Jessica"];
+
+    const COMPANY_LAT = 25.06180836703763; 
+
+    const COMPANY_LNG = 121.5446397637914;
+
+    const ALLOWED_DISTANCE = 30; 
+
+    const USER_LIST = <?!= JSON.stringify(userList) ?>;
+
+
+
+    let map, userMarker, companyCircle;
+
+    // 🟢 防止震動開關
+
+    let isFirstLocate = true; 
+
+
+
+    const nameInput = document.getElementById('manual-name');
+
+    const statusEl = document.getElementById('status');
+
+    const btn = document.getElementById('btn');
+
+    const modalContent = document.getElementById('modalContent');
+
+
+
+    window.onload = async function() {
+
+      initDropdown();
+
+      initMap();
+
+      const savedName = localStorage.getItem('gps_uname');
+
+      if (savedName && USER_LIST.includes(savedName)) nameInput.value = savedName;
+
+      try { await liff.init({ liffId: LIFF_ID }); } catch (e) {}
+
+    };
+
+
+
+    function initMap() {
+
+        map = L.map('map', { zoomControl: false, attributionControl: false }).setView([COMPANY_LAT, COMPANY_LNG], 16);
+
+        
+
+        // 🟢 這裡換風格！(目前使用 Voyager：彩色但乾淨)
+
+        // 1. Voyager (彩色文青風 - 推薦)
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 20, subdomains: 'abcd' }).addTo(map);
+
+
+
+        // 2. 如果你想要原本的彩色標準版 (OSM)，可以把上面那行註解掉，改用這行：
+
+        // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+
+
+
+        // 3. 如果你喜歡深色模式 (Dark Matter)，可以用這行：
+
+        // L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 20, subdomains: 'abcd' }).addTo(map);
+
+
+
+        companyCircle = L.circle([COMPANY_LAT, COMPANY_LNG], { 
+
+            color: 'transparent', fillColor: '#0daaba', fillOpacity: 0.15, radius: ALLOWED_DISTANCE 
+
+        }).addTo(map);
+
+        
+
+        L.circleMarker([COMPANY_LAT, COMPANY_LNG], {
+
+            radius: 4, color: '#fff', fillColor: '#0daaba', fillOpacity: 1, weight: 2
+
+        }).addTo(map);
+
+
+
+        if (navigator.geolocation) {
+
+            // 使用 watchPosition 監聽移動，但不一定要一直移動鏡頭
+
+            navigator.geolocation.watchPosition(
+
+                (pos) => { 
+
+                  updateMapLocation(pos.coords.latitude, pos.coords.longitude); 
+
+                  checkDistanceRealtime(pos.coords.latitude, pos.coords.longitude);
+
+                },
+
+                (err) => { statusEl.innerText = "❌ 無法取得位置"; statusEl.style.color = "#ff5252"; },
+
+                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+
+            );
+
+        }
+
+    }
+
+
+
+    function updateMapLocation(lat, lng) {
+
+        if (userMarker) {
+
+            userMarker.setLatLng([lat, lng]);
+
+        } else {
+
+            const pulseIcon = L.divIcon({
+
+                className: 'user-pulse-marker',
+
+                iconSize: [16, 16],
+
+                iconAnchor: [8, 8]
+
+            });
+
+            userMarker = L.marker([lat, lng], {icon: pulseIcon}).addTo(map);
+
+        }
+
+
+
+        // 🟢 止暈邏輯：只有「第一次」抓到位置時，地圖才會飛過去
+
+        // 之後如果人移動，只有紅點會動，地圖不會一直震動
+
+        if (isFirstLocate) {
+
+            map.flyTo([lat, lng], 17, { animate: true, duration: 1.5 });
+
+            isFirstLocate = false; // 關閉自動追蹤
+
+        }
+
+    }
+
+
+
+    function checkDistanceRealtime(lat, lng) {
+
+       const dist = getDistance(lat, lng, COMPANY_LAT, COMPANY_LNG);
+
+       if (dist <= ALLOWED_DISTANCE) {
+
+         statusEl.innerHTML = `🟢 距離公司 ${Math.round(dist)}m (可打卡)`;
+
+         statusEl.style.color = "#0daaba";
+
+       } else {
+
+         statusEl.innerHTML = `🔴 距離公司 ${Math.round(dist)}m (太遠了)`;
+
+         statusEl.style.color = "#ff5252";
+
+       }
+
+    }
+
+
+
+    // --- 以下邏輯保持不變 ---
+
+    function initDropdown() {
+
+        USER_LIST.forEach(name => {
+
+            let option = document.createElement("option");
+
+            option.value = name; option.text = name;
+
+            nameInput.appendChild(option);
+
+        });
+
+    }
+
+
+
+    async function checkMood() {
+
+      const moodBtn = document.querySelector('.btn-mood');
+
+      const originalText = moodBtn.innerText;
+
+      moodBtn.disabled = true; moodBtn.innerText = "讀取中...";
+
+      try {
+
+        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'get_mood' }) });
+
+        const json = await res.json();
+
+        if (json.status === 'success') showMoodResult(json);
+
+      } catch(e) { alert("連線失敗"); }
+
+      finally { moodBtn.disabled = false; moodBtn.innerText = originalText; }
+
+    }
+
+
+
+    function handleCheckIn() {
+
+      const uname = nameInput.value.trim();
+
+      if (!uname) return alert("請選擇姓名！");
+
+      localStorage.setItem('gps_uname', uname);
+
+      if (!navigator.geolocation) return alert("您的裝置不支援 GPS");
+
+      btn.disabled = true; btn.innerText = "打卡中...";
+
+      navigator.geolocation.getCurrentPosition(
+
+        (pos) => { 
+
+           const dist = getDistance(pos.coords.latitude, pos.coords.longitude, COMPANY_LAT, COMPANY_LNG);
+
+           if (dist > ALLOWED_DISTANCE) { 
+
+             showCheckInResult("❌ 打卡失敗", `不在公司範圍內\n距離公司 ${Math.round(dist)}m`, -1); 
+
+             resetBtn(); 
+
+           } else { 
+
+             submitData({ action: 'check_in', displayName: uname, userLocation: `${pos.coords.latitude},${pos.coords.longitude}` }); 
+
+           }
+
+        },
+
+        (err) => { alert("定位失敗"); resetBtn(); }, { enableHighAccuracy: true, timeout: 10000 }
+
+      );
+
+    }
+
+
+
+    function openMakeupModal() { document.getElementById('makeupModal').style.display = 'flex'; }
+
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    function submitMakeup() {
+
+      const uname = nameInput.value.trim(); if (!uname) return alert("請先選擇姓名");
+
+      const p = document.getElementById('makeup-pass').value; const t = document.getElementById('makeup-time').value;
+
+      if (!p || !t) return alert("請填寫完整");
+
+      closeModal('makeupModal');
+
+      submitData({ action: 'check_in', displayName: uname, isMakeup: true, password: p, checkInTime: t, userLocation: "0,0" });
+
+    }
+
+
+
+    async function submitData(payload) {
+
+      try {
+
+        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+
+        const json = await res.json();
+
+        if (json.status === 'success') { 
+
+           let msg = json.message; if (json.details) msg = `${json.details.status} (${json.details.time})\n${json.details.moodText}`;
+
+           showCheckInResult("✅ 打卡成功", msg, json.score || 0);
+
+        } else { showCheckInResult("❌ 失敗", json.message, -1); }
+
+      } catch (e) { alert("錯誤"); } finally { resetBtn(); }
+
+    }
+
+    function resetBtn() { btn.disabled = false; btn.innerText = "📍 立即打卡"; }
+
+
+
+    function showMoodResult(data) {
+
+      let scoresHtml = '';
+
+      if (data.scores) {
+
+          const sorted = Object.keys(data.scores).sort((a,b) => data.scores[b] - data.scores[a]);
+
+          sorted.forEach(u => {
+
+             const c = data.scores[u] >= 0 ? '#06c755' : '#ff5252';
+
+             scoresHtml += `<div class="score-row"><span style="color:#555">${u}</span><span style="font-weight:bold;color:${c}">${data.scores[u]}</span></div>`;
+
+          });
+
+      }
+
+      modalContent.innerHTML = `<div class="mood-icon-wrapper" style="font-size:50px">${data.moodIcon}</div><div class="res-title">${data.moodText}</div><div style="color:#888;font-size:13px;margin-bottom:15px">"${data.flavorText}"</div><div class="score-list">${scoresHtml}</div><button class="btn close-btn" onclick="closeModal('resultModal')">關閉</button>`;
+
+      document.getElementById('resultModal').style.display = 'flex';
+
+      if (data.totalScore >= 50) fireConfetti();
+
+    }
+
+    function showCheckInResult(title, msg, score) {
+
+      let icon = "📋"; if (score >= 50) { icon = "🫢"; fireConfetti(); } else if (score > 0) icon = "👀"; else if (score < 0) icon = "👺";
+
+      modalContent.innerHTML = `<div style="font-size:40px;margin-bottom:10px">${icon}</div><div class="res-title">${title}</div><div class="res-msg">${msg}</div><button class="btn" onclick="closeModal('resultModal')">好的</button>`;
+
+      document.getElementById('resultModal').style.display = 'flex';
+
+    }
+
+    function fireConfetti() { const c = ['#ff5252', '#0daaba', '#ffd700']; for (let i=0; i<40; i++) { const d=document.createElement('div'); d.classList.add('confetti'); d.style.left=Math.random()*100+'vw'; d.style.backgroundColor=c[Math.floor(Math.random()*c.length)]; d.style.animationDuration=(Math.random()*2+2)+'s'; document.body.appendChild(d); setTimeout(()=>d.remove(),4000); } }
+
+    function getDistance(lat1, lon1, lat2, lon2) { const R = 6371e3; const φ1 = lat1 * Math.PI/180, φ2 = lat2 * Math.PI/180; const a = Math.sin((lat2-lat1)*Math.PI/180/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin((lon2-lon1)*Math.PI/180/2)**2; return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); }
+
+  </script>
+
 </body>
+
 </html>
