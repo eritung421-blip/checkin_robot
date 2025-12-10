@@ -265,10 +265,12 @@
             userMarker = L.marker([lat, lng], {icon: pulseIcon}).addTo(map);
         }
 
-      // 🟢 新的：改用 setView，平平地滑過去，不會忽大忽小
+        // 🟢 超級穩版：關閉動畫 (animate: false)
+        // 直接瞬移到位置，徹底解決「進場很抖」的問題
         if (isFirstLocate) {
-            map.setView([lat, lng], 17, { animate: true }); 
-            isFirstLocate = false;
+            map.setView([lat, lng], 17, { animate: false }); 
+            isFirstLocate = false; 
+        }
     }
 
     function checkDistanceRealtime(lat, lng) {
