@@ -204,7 +204,7 @@
     const GAS_URL = "https://script.google.com/macros/s/AKfycbyRYfRDdgMr_yqP_5XyJ0XKylCfh9VyyzVpg1whInSHaM880wvsfMl3WO-5Dg2lvvUX/exec"; 
     
     // 名單設定
-    const USER_LIST = ["Eri", "Jessica", "Ann", "Joy", "Ally", "Irene", "桑尼"];
+    const USER_LIST = ["Eri", "Jessica","測試用"];
 
     const COMPANY_LAT = 25.06180836703763; 
     const COMPANY_LNG = 121.5446397637914;
@@ -285,7 +285,7 @@
       } catch (e) {
         alert("無法讀取 IP，請確認網路連線正常");
         btnWifi.disabled = false;
-        btnWifi.innerText = "📡 Wi-Fi / IP";
+        btnWifi.innerText = "📡 Wi-Fi 打卡";
       }
     }
 
@@ -348,7 +348,7 @@
     
     function resetBtn() { 
         btn.disabled = false; btn.innerText = "📍 GPS 打卡"; 
-        btnWifi.disabled = false; btnWifi.innerText = "📡 Wi-Fi / IP";
+        btnWifi.disabled = false; btnWifi.innerText = "📡 Wi-Fi 打卡";
     }
 
     function showMoodResult(data) {
